@@ -27,7 +27,7 @@ if page == "📖 À propos de l'app":
     st.markdown("""
     Bienvenue sur **GA4 Checker** !
 
-    Cette application vous permet d’analyser les URLs issues de vos exports GA4 (Google Analytics 4) afin de :
+    Cette application vous permet d’analyser et d'avoir un audit automatisé de votre donnée GA4 :
 
     - Le premier module à venir va vous permettre d'importer et analyser vos page_location
     - L'objectif final est d'automatiser votre audit GA4 au global depuis la donnée brute, sans modification des données sources
@@ -38,6 +38,9 @@ if page == "📖 À propos de l'app":
 # PAGE 2 : URL Parser
 elif page == "🔎 Page Location Checker":
     st.title("🔗 Analyse d'une URL")
+    st.markdown("""
+        Page Location Checker est en cours de construction
+        """)
     #user_input = st.text_input("Colle ici l’URL à analyser :")
     """
     if user_input:
