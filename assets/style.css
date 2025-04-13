@@ -1,0 +1,19 @@
+/* assets/style.css */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #AAAAAA;
+}
+a {
+    color: #FCC02D !important;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
