@@ -5,7 +5,7 @@ from pathlib import Path
 # Page config
 st.set_page_config(
     page_title="GA4 Checker",
-    page_icon="🧪",
+    page_icon="🕵️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -23,24 +23,23 @@ page = st.sidebar.radio("Aller vers", ["📖 À propos de l'app", "🔎 Analyse 
 
 # PAGE 1 : Présentation
 if page == "📖 À propos de l'app":
-    st.title("GA4 Checker 🧪")
+    st.title("GA4 Checker 🕵️")
     st.markdown("""
     Bienvenue sur **GA4 Checker** !
 
     Cette application vous permet d’analyser les URLs issues de vos exports GA4 (Google Analytics 4) afin de :
 
-    - Valider la structure de vos liens (netloc, query, fragment…)
-    - Identifier les éventuelles erreurs de paramétrage
-    - Automatiser votre audit dans un format brut, sans modification des données sources
+    - Le premier module à venir va vous permettre d'importer et analyser vos page_location
+    - L'objectif final est d'automatiser votre audit GA4 au global depuis la donnée brute, sans modification des données sources
 
     D'autres modules viendront enrichir l'application bientôt 🚀
     """)
 
 # PAGE 2 : URL Parser
-elif page == "🔎 Analyse d'URL":
+elif page == "🔎 Page Location Checker":
     st.title("🔗 Analyse d'une URL")
-    user_input = st.text_input("Colle ici l’URL à analyser :")
-
+    #user_input = st.text_input("Colle ici l’URL à analyser :")
+    """
     if user_input:
         try:
             parsed = urlparse(user_input)
@@ -55,6 +54,7 @@ elif page == "🔎 Analyse d'URL":
             })
         except Exception as e:
             st.error(f"Erreur de parsing : {e}")
+    """
 
 # FOOTER
 st.markdown("""
