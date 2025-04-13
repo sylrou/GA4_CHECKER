@@ -19,7 +19,13 @@ load_css()
 
 # Navigation
 st.sidebar.title("📚 Navigation")
-page = st.sidebar.radio("Aller vers", ["📖 À propos de l'app", "🔎 Analyse d'URL"])
+page = st.sidebar.radio(
+    "Aller vers",
+        [
+        "📖 À propos de l'app",
+        "🔗 Audit page location"
+        ]
+)
 
 # PAGE 1 : Présentation
 if page == "📖 À propos de l'app":
@@ -36,28 +42,26 @@ if page == "📖 À propos de l'app":
     """)
 
 # PAGE 2 : URL Parser
-elif page == "🔎 Page Location Checker":
-    st.title("🔗 Analyse d'une URL")
+elif page == "🔗 Audit page location":
+    st.title("🔗 Audit page location")
     st.markdown("""
         Page Location Checker est en cours de construction
         """)
     #user_input = st.text_input("Colle ici l’URL à analyser :")
-    """
-    if user_input:
-        try:
-            parsed = urlparse(user_input)
-            st.subheader("Résultats du parsing")
-            st.json({
-                "scheme": parsed.scheme,
-                "netloc": parsed.netloc,
-                "path": parsed.path,
-                "params": parsed.params,
-                "query": parsed.query,
-                "fragment": parsed.fragment
-            })
-        except Exception as e:
-            st.error(f"Erreur de parsing : {e}")
-    """
+#    if user_input:
+#        try:
+#            parsed = urlparse(user_input)
+#            st.subheader("Résultats du parsing")
+#            st.json({
+#                "scheme": parsed.scheme,
+#                "netloc": parsed.netloc,
+#                "path": parsed.path,
+#                "params": parsed.params,
+#                "query": parsed.query,
+#                "fragment": parsed.fragment
+#            })
+#        except Exception as e:
+#            st.error(f"Erreur de parsing : {e}")
 
 # FOOTER
 st.markdown("""
