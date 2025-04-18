@@ -1,8 +1,8 @@
 import streamlit as st
-from urllib.parse import urlparse
-from pathlib import Path
 
-# Page config
+from app_pa import home, remerciement, page_location_validity
+
+# Page configs
 st.set_page_config(
     page_title="GA4 Checker",
     page_icon="🕵️",
@@ -23,49 +23,14 @@ page = st.sidebar.radio(
     "Aller vers",
         [
         "📖 À propos de l'app",
-        "🔗 Audit page location"
+        "🔗 Audit page location",
+        " Remerciement"
         ]
 )
-
-# PAGE 1 : Présentation
+# Routage des app_pa
 if page == "📖 À propos de l'app":
-    st.title("GA4 Checker 🕵️")
-    st.markdown("""
-    Bienvenue sur **GA4 Checker** !
-
-    Cette application vous permet d’analyser et d'avoir un audit automatisé de votre donnée GA4 :
-
-    - Le premier module à venir va vous permettre d'importer et analyser vos page_location
-    - L'objectif final est d'automatiser votre audit GA4 au global depuis la donnée brute, sans modification des données sources
-
-    D'autres modules viendront enrichir l'application bientôt 🚀
-    """)
-
-# PAGE 2 : URL Parser
+    home.show()
 elif page == "🔗 Audit page location":
-    st.title("🔗 Audit page location")
-    st.markdown("""
-        Page Location Checker est en cours de construction
-        """)
-    #user_input = st.text_input("Colle ici l’URL à analyser :")
-#    if user_input:
-#        try:
-#            parsed = urlparse(user_input)
-#            st.subheader("Résultats du parsing")
-#            st.json({
-#                "scheme": parsed.scheme,
-#                "netloc": parsed.netloc,
-#                "path": parsed.path,
-#                "params": parsed.params,
-#                "query": parsed.query,
-#                "fragment": parsed.fragment
-#            })
-#        except Exception as e:
-#            st.error(f"Erreur de parsing : {e}")
-
-# FOOTER
-st.markdown("""
-    <div class="footer">
-        Créé avec ❤️ par <a href="https://www.linkedin.com/in/empirik-sylvain-rouxel/" target="_blank">Sylvain Rouxel</a>
-    </div>
-""", unsafe_allow_html=True)
+    page_location_validity.show()
+elif page == " Remerciement":
+    remerciement.show()
