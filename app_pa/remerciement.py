@@ -1,43 +1,44 @@
-# 3_🤝_remerciements.py
-
 import streamlit as st
 import random
 
 def show():
-    # Animation random pour le fun 🎉
+    # 🎉 Petit effet sympa à chaque chargement
     st.balloons()
 
-
-    # Titre de la page
+    # Titre principal
     st.title("🤝 Remerciements")
 
-    # Message d'intro
+    # Introduction
     st.markdown("""
     Bienvenue sur la page des remerciements du projet **GA4Checker**.  
-    Ce projet est open-source, mais il est avant tout une aventure humaine 🙌  
-    Merci à toutes celles et ceux qui ont contribué à le faire grandir !
+    Ce projet est open-source, mais surtout une belle aventure humaine 🙌  
+    Merci à toutes celles et ceux qui, de près ou de loin, ont contribué à sa création et son évolution.
     """)
 
-    # Liste des remerciements
     st.markdown("---")
-    st.subheader("💡 Very special thanks")
+
+    # Special thanks
+    st.subheader("🤍 Very special thanks")
     st.markdown("""
-    - **Yannick Darcy** — Pour son encouragement et sans qui jamais une seule ligne de code ne serait en production.
+    - **Yannick Darcy** — Pour son soutien indéfectible et sans qui aucune ligne de code ne serait jamais en production.
+    - **Jonathan Marie** — Pour m'avoir (généreusement 😅) forcé à suivre *Introduction to Computer Science* du MIT.
+    - **Corentin Deschamps** — Pour avoir partagé cette aventure de formation avec moi.
     """)
 
-    st.subheader("💡 Contributions & Soutiens")
-
+    # Contributions
+    st.subheader("🧠 Contributions & Soutiens")
     st.markdown("""
     - **Christian Laville**
     - **Clément Tabard**
-    - **Les personnes qui partagent**
+    - **Toutes les personnes qui partagent leurs idées, retours, et leur temps.**
     """)
 
+    # Appel à contribution
     st.markdown("""
     **Et vous ?**  
-    Si vous avez des idées, remarques ou que vous souhaitez contribuer, n'hésitez pas à me contacter ou à faire une *pull request* 🛠️
+    Si vous avez des idées, des remarques, ou l’envie de contribuer, n'hésitez pas à me contacter !
     """)
 
-    # Option : pied de page app_pa
+    # Footer light
     st.markdown("---")
-    st.caption("✨ Projet GA4Checker — open-source & évolutif.")
+    st.caption("✨ GA4Checker — un projet open-source, évolutif, et fait avec passion.")
