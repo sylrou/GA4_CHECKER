@@ -1,0 +1,18 @@
+# Environnement virtuel
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Dossier de pré-prod
+preproduction/
+
+# Configs locales
+*.DS_Store
+*.env
+
+# IDE
+.vscode/
+.idea/
+
