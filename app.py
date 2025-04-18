@@ -24,7 +24,7 @@ page = st.sidebar.radio(
         [
         "📖 À propos de l'app",
         "🔗 Audit page location",
-        " Remerciement"
+        "🤝 Remerciement"
         ]
 )
 # Routage des app_pa
