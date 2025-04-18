@@ -1,14 +1,11 @@
 /* assets/style.css */
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: transparent;
+    background-color: #000;
+    color: #fff;
     text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    color: #AAAAAA;
+    font-size: 0.9em;
+    padding: 20px 10px;
+    border-top: 1px solid #444;
 }
 a {
     color: #FCC02D !important;

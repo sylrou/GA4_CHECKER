@@ -32,5 +32,5 @@ if page == "📖 À propos de l'app":
     home.show()
 elif page == "🔗 Audit page location":
     page_location_validity.show()
-elif page == " Remerciement":
+elif page == "🤝 Remerciement":
     remerciement.show()
