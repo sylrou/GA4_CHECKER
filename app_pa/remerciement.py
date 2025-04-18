@@ -21,7 +21,7 @@ def show():
     st.subheader("🤍 Very special thanks")
     st.markdown("""
     - **Yannick Darcy** — Pour son soutien indéfectible et sans qui aucune ligne de code ne serait jamais en production.
-    - **Jonathan Marie** — Pour m'avoir (généreusement 😅) forcé à suivre *Introduction to Computer Science with Python* du MIT.
+    - **Jonathan Mary** — Pour m'avoir (généreusement 😅) forcé à suivre *Introduction to Computer Science with Python* du MIT.
     - **Corentin Deschamps** — Pour avoir partagé cette aventure de formation avec moi.
     """)
 
@@ -31,6 +31,8 @@ def show():
     - **Christian Laville**
     - **Clément Tabard**
     - **Benjamin Dubreu et dataUpskill**
+    - **L'AADF - Association des analystes de France**
+    
     - **Toutes les personnes qui partagent leurs idées, retours, et leur temps.**
     """)
 
