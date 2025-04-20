@@ -7,7 +7,7 @@ __pycache__/
 
 # Dossier et fichier de pré-prod et test
 preproduction/
-*.json
+temp_validity.json
 *.duckdb
 
 # Configs locales

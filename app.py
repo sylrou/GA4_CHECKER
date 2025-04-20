@@ -1,6 +1,6 @@
 import streamlit as st
 
-from app_pa import home, remerciement, page_location_validity, exploration
+from app_pa import home, remerciement, page_location_validity, exploration, data_import
 
 # Page configs
 st.set_page_config(
@@ -23,17 +23,20 @@ page = st.sidebar.radio(
     "Aller vers",
         [
         "📖 À propos de l'app",
-        "🔗 Audit page location",
-        "🤝 Remerciements",
-        "Exploration libre"
+        "📂 Choisissez votre donnée",
+        "🔗 Audit du page_location",
+        "🔍 Exploration libre",
+        "🤝 Remerciements"
         ]
 )
 # Routage des app_pa
 if page == "📖 À propos de l'app":
     home.show()
-elif page == "🔗 Audit page location":
+elif page == "📂 Choisissez votre donnée":
+    data_import.show()
+elif page == "🔗 Audit du page_location":
     page_location_validity.show()
 elif page == "🤝 Remerciements":
     remerciement.show()
-elif page == "Exploration libre":
+elif page == "🔍 Exploration libre":
     exploration.show()

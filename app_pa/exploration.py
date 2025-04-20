@@ -3,30 +3,24 @@ import duckdb
 import os
 
 def show():
-    st.title("Exploration SQL")
+    st.title("🧠 Exploration SQL libre")
 
-    temp_path = os.path.abspath("temp_validity.json")
+    db_path = os.path.abspath("ga4.duckdb")
 
-    if os.path.exists(temp_path):
-        with duckdb.connect() as con:
-            # Charger extension JSON
-            con.execute("INSTALL json; LOAD json;")
+    if os.path.exists(db_path):
+        # Connexion à la base existante en lecture seule
+        con = duckdb.connect(database=db_path, read_only=True)
 
-            # Charger ou recréer la table temporaire
-            con.execute(f"""
-                CREATE OR REPLACE TABLE ga4_data AS
-                SELECT * FROM read_ndjson('{temp_path}', union_by_name=True, sample_size=1000000)
-            """)
-            st.success("Fichier chargé et DuckDB initialisé ✅")
+        # Zone de requête utilisateur
+        query = st.text_area("💬 Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10")
 
-            # Zone de requête utilisateur
-            query = st.text_area("Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10")
+        if st.button("▶️ Exécuter la requête"):
+            try:
+                result = con.execute(query).df()
+                st.dataframe(result, use_container_width=True)
+            except Exception as e:
+                st.error(f"❌ Erreur dans la requête : {e}")
 
-            if st.button("Exécuter la requête"):
-                try:
-                    result = con.execute(query).df()
-                    st.dataframe(result)
-                except Exception as e:
-                    st.error(f"Erreur dans la requête : {e}")
+        con.close()
     else:
-        st.warning("Fichier non trouvé. Va sur la page d'import pour charger le fichier.")
+        st.warning("⚠️ Aucune base trouvée. Va sur la page d'import pour charger un fichier GA4.")
