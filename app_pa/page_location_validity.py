@@ -1,27 +1,27 @@
-# Streamlit app to analyze URL query parameters from GA4 event_params
+# Analyser les paramètres d'URL à partir de GA4 (event_params)
+
 import streamlit as st
 import duckdb
 import pandas as pd
-import re
 import os
 
 from urllib.parse import urlparse, parse_qsl
 from collections import Counter
 
 def show():
-    st.title("🔍 Audit des paramètres d’URL (`page_location`)")
+    st.title("🔍 Audit des paramètres d'URL (`page_location`)")
 
-    # --- Vérifie si le fichier ga4.duckdb existe ---
+    # --- Étape de vérification (compute) : vérifier l'existence de la base de données ---
     db_path = os.path.abspath("ga4.duckdb")
     if not os.path.exists(db_path):
         st.error("Aucune base de données trouvée. Veuillez d'abord importer un fichier via la page d'import.")
         st.stop()
 
-    # --- Connexion à la base existante ---
+    # --- Connexion à la base de données (compute) ---
     with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
         con = duckdb.connect(database=db_path, read_only=True)
 
-    # -- Classe d’analyse des URLs --
+    # --- Classe utilitaire (compute) : permet d'analyser une URL et d'en extraire des caractéristiques ---
     class URLInspector:
         def __init__(self, url):
             self.url = url
@@ -41,6 +41,12 @@ def show():
         def get_param_keys(self):
             return [k for k, _ in self.query_params]
 
+        def get_unique_param_keys(self):
+            return set(k for k, _ in self.query_params)
+
+        def get_fragment(self):
+            return self.parsed.fragment
+
         def has_fragment(self):
             return bool(self.parsed.fragment)
 
@@ -51,61 +57,58 @@ def show():
             return {
                 "url": self.url,
                 "https": self.is_https(),
-                "netloc": self.get_netloc(),
+                "hostname": self.get_netloc(),
                 "param_count": len(self.query_params),
                 "param_keys": self.get_param_keys(),
                 "dup_params": self.get_duplicate_params(),
+                "fragment": self.get_fragment(),
                 "has_fragment": self.has_fragment(),
                 "url_too_long": self.is_url_too_long()
             }
 
-    # --- Extraction des page_location ---
+    # --- Requête SQL (compute) : extraire les valeurs uniques de 'page_location' ---
     st.subheader("📍 Extraction des URLs depuis 'page_location'")
     query = '''
-           SELECT DISTINCT
-               unnest.value.string_value AS page_location
-           FROM ga4_data, 
-           LATERAL UNNEST(event_params) AS unnest
-           WHERE unnest.key = 'page_location'
-           AND unnest.value.string_value IS NOT NULL
-           '''
+        SELECT DISTINCT
+            unnest.value.string_value AS page_location
+        FROM ga4_data, 
+        LATERAL UNNEST(event_params) AS unnest
+        WHERE unnest.key = 'page_location'
+        AND unnest.value.string_value IS NOT NULL
+    '''
     with st.spinner("Requête en cours..."):
         df_page_location = con.execute(query).df()
     con.close()
 
+    # --- Affichage (display) : visualisation des URLs extraites ---
     st.subheader("📋 Liste des 'page_location'")
-    st.dataframe(df_page_location, use_container_width=True)
-    st.write(f"{len(df_page_location)} URLs uniques extraites")
+    st.metric(label="URLs uniques extraites", value=len(df_page_location), border=True)
+    st.data_editor(df_page_location, use_container_width=True)
+    st.download_button("📥 Télécharger les URLs", data=df_page_location.to_csv(index=False), file_name="ga4_page_location.csv")
 
-    st.download_button("📥 Télécharger les URLs", data=df_page_location.to_csv(index=False),
-                       file_name="ga4_page_location.csv")
-
-    # --- Analyse des paramètres d’URL ---
-    regex_query = r'\?(.*)'
-    regex_param = r'([^=&]+)(?:=[^&]*)?'
-
-    query_url = []
+    # --- Analyse des paramètres d'URL (compute) ---
     simple_query = set()
-
     for page in df_page_location['page_location']:
-        match = re.search(regex_query, page)
-        query = match.group(1) if match else None
-        if query and query not in query_url:
-            query_url.append(query)
+        inspector = URLInspector(page)
+        simple_query.update(inspector.get_unique_param_keys())
 
-    for q in query_url:
-        matches = re.findall(regex_param, q)
-        for param in matches:
-            simple_query.add(param)
-
+    # --- Affichage (display) : liste des paramètres détectés ---
     st.subheader("🧾 Liste des paramètres détectés")
     query_df = pd.DataFrame(sorted(list(simple_query)), columns=["query_param"])
-    st.dataframe(query_df, use_container_width=True)
+    st.metric(label="Nombre de paramètres uniques", value=len(simple_query), border=True)
+    st.data_editor(query_df, use_container_width=True)
     st.download_button("📥 Télécharger les paramètres", data=query_df.to_csv(index=False), file_name="ga4_query_params.csv")
 
-    # --- Résumés par URL ---
+    # --- Résumé technique par URL (compute) ---
     st.subheader("🧪 Résumé technique par URL")
     summaries = [URLInspector(url).summary() for url in df_page_location['page_location']]
     summary_df = pd.DataFrame(summaries)
-    st.dataframe(summary_df, use_container_width=True)
+
+    # --- Affichage (display) : métriques techniques ---
+    col1, col2, col3 = st.columns(3)
+    col1.metric(label="Nombre d'URLs en HTTP", value=((summary_df['https'] == False).sum()), border=True)
+    col2.metric(label="Nombre d'hôtes différents", value=len(summary_df['hostname'].unique()), border=True)
+    col3.metric(label="Nombre max de paramètres", value=summary_df['param_count'].max(), border=True)
+
+    st.data_editor(summary_df, use_container_width=True)
     st.download_button("📥 Télécharger le résumé complet", data=summary_df.to_csv(index=False), file_name="ga4_url_summary.csv")
