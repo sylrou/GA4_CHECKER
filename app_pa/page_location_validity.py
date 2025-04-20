@@ -9,10 +9,19 @@ from urllib.parse import urlparse, parse_qsl
 from collections import Counter
 
 def show():
-    # --- Streamlit Config ---
-    st.title("🔍 GA4 Checker – Chapitre 'Validity'")
+    st.title("🔍 Audit des paramètres d’URL (`page_location`)")
 
-    #-- class init --
+    # --- Vérifie si le fichier ga4.duckdb existe ---
+    db_path = os.path.abspath("ga4.duckdb")
+    if not os.path.exists(db_path):
+        st.error("Aucune base de données trouvée. Veuillez d'abord importer un fichier via la page d'import.")
+        st.stop()
+
+    # --- Connexion à la base existante ---
+    with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+        con = duckdb.connect(database=db_path, read_only=True)
+
+    # -- Classe d’analyse des URLs --
     class URLInspector:
         def __init__(self, url):
             self.url = url
@@ -50,88 +59,53 @@ def show():
                 "url_too_long": self.is_url_too_long()
             }
 
-
-    # --- Upload fichier JSON ---
-    uploaded_file = st.file_uploader("Uploadez votre export GA4 (JSON)", type="json")
-
-    if uploaded_file:
-        temp_path = os.path.abspath("temp_validity.json")
-        with open(temp_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-
-        # --- Connexion DuckDB ---
-        con = duckdb.connect()
-        con.execute("INSTALL json; LOAD json;")
-        con.execute(f"""
-            CREATE OR REPLACE TABLE ga4_data AS
-            SELECT * FROM read_ndjson('{temp_path}', union_by_name=True, sample_size=1000000)
-        """)
-
-        st.success("Fichier chargé et DuckDB initialisé ✅")
-
-        # --- Extraction des page_location ---
-        st.subheader("📍 Extraction des URLs depuis 'page_location'")
-        query = f'''
-               SELECT DISTINCT
-                   unnest.value.string_value AS page_location
-               FROM GA4_data, 
-               LATERAL UNNEST(event_params)
-               WHERE unnest.key = 'page_location'
-               AND unnest.value.string_value IS NOT NULL
-               '''
-
-        st.subheader("📋 Liste des page_location du dataset'")
+    # --- Extraction des page_location ---
+    st.subheader("📍 Extraction des URLs depuis 'page_location'")
+    query = '''
+           SELECT DISTINCT
+               unnest.value.string_value AS page_location
+           FROM ga4_data, 
+           LATERAL UNNEST(event_params) AS unnest
+           WHERE unnest.key = 'page_location'
+           AND unnest.value.string_value IS NOT NULL
+           '''
+    with st.spinner("Requête en cours..."):
         df_page_location = con.execute(query).df()
-        st.dataframe(df_page_location, use_container_width=True)
+    con.close()
 
-        st.write(f"{len(df_page_location)} valeurs de 'page_location' extraites uniques")
-        st.download_button("📥 Télécharger la liste des url en CSV", data=df_page_location.to_csv(index=False),
-                           file_name="ga4_query_params.csv")
+    st.subheader("📋 Liste des 'page_location'")
+    st.dataframe(df_page_location, use_container_width=True)
+    st.write(f"{len(df_page_location)} URLs uniques extraites")
 
-        # --- Extraction des queries (regex) ---
-        regex_query = r'\?(.*)'
-        regex_param = r'([^=&]+)(?:=[^&]*)?'
+    st.download_button("📥 Télécharger les URLs", data=df_page_location.to_csv(index=False),
+                       file_name="ga4_page_location.csv")
 
-        query_url = []
-        simple_query = set()
+    # --- Analyse des paramètres d’URL ---
+    regex_query = r'\?(.*)'
+    regex_param = r'([^=&]+)(?:=[^&]*)?'
 
-        for page in df_page_location['page_location']:
-            match = re.search(regex_query, page)
-            query = match.group(1) if match else None
-            if query and query not in query_url:
-                query_url.append(query)
+    query_url = []
+    simple_query = set()
 
-        for q in query_url:
-            matches = re.findall(regex_param, q)
-            for param in matches:
-                simple_query.add(param)
+    for page in df_page_location['page_location']:
+        match = re.search(regex_query, page)
+        query = match.group(1) if match else None
+        if query and query not in query_url:
+            query_url.append(query)
 
-        st.subheader("📋 Liste des paramètres d'url dans votre dataset'")
-        query_df = pd.DataFrame(sorted(list(simple_query)), columns=["query_param"])
-        st.dataframe(query_df, use_container_width=True)
+    for q in query_url:
+        matches = re.findall(regex_param, q)
+        for param in matches:
+            simple_query.add(param)
 
-        st.download_button("📥 Télécharger les paramètres en CSV", data=query_df.to_csv(index=False), file_name="ga4_query_params.csv")
+    st.subheader("🧾 Liste des paramètres détectés")
+    query_df = pd.DataFrame(sorted(list(simple_query)), columns=["query_param"])
+    st.dataframe(query_df, use_container_width=True)
+    st.download_button("📥 Télécharger les paramètres", data=query_df.to_csv(index=False), file_name="ga4_query_params.csv")
 
-        # Création des résumés pour chaque URL
-        summaries = []
-
-        for url in df_page_location['page_location']:
-            inspector = URLInspector(url)
-            summaries.append(inspector.summary())
-
-        # Création du DataFrame global de résumé
-        summary_df = pd.DataFrame(summaries)
-
-        # Affichage du tableau
-        st.subheader("🧾 Résumé des URLs")
-        st.dataframe(summary_df, use_container_width=True)
-
-        # Téléchargement en CSV
-        st.download_button("📥 Télécharger le résumé en CSV", data=summary_df.to_csv(index=False),
-                           file_name="ga4_url_summary.csv")
-
-        # Facultatif : Histogramme ou analyse plus poussée ici
-
-        con.close()
-    else:
-        st.info("Veuillez uploader un fichier JSON pour lancer l'analyse.")
+    # --- Résumés par URL ---
+    st.subheader("🧪 Résumé technique par URL")
+    summaries = [URLInspector(url).summary() for url in df_page_location['page_location']]
+    summary_df = pd.DataFrame(summaries)
+    st.dataframe(summary_df, use_container_width=True)
+    st.download_button("📥 Télécharger le résumé complet", data=summary_df.to_csv(index=False), file_name="ga4_url_summary.csv")

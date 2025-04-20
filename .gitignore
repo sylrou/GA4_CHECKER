@@ -5,9 +5,9 @@ venv/
 __pycache__/
 *.pyc
 
-# Dossier de pré-prod
-preproduction/
-*.json
+# Dossier et fichier de pré-prod et test
+preproduction
+temp_validity.json
 *.duckdb
 
 # Configs locales
