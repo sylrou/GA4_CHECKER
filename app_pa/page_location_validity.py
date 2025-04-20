@@ -18,7 +18,8 @@ def show():
         st.stop()
 
     # --- Connexion à la base existante ---
-    con = duckdb.connect(database=db_path, read_only=True)
+    with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+        con = duckdb.connect(database=db_path, read_only=True)
 
     # -- Classe d’analyse des URLs --
     class URLInspector:
@@ -68,8 +69,8 @@ def show():
            WHERE unnest.key = 'page_location'
            AND unnest.value.string_value IS NOT NULL
            '''
-
-    df_page_location = con.execute(query).df()
+    with st.spinner("Requête en cours..."):
+        df_page_location = con.execute(query).df()
     con.close()
 
     st.subheader("📋 Liste des 'page_location'")

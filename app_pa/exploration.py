@@ -9,15 +9,17 @@ def show():
 
     if os.path.exists(db_path):
         # Connexion à la base existante en lecture seule
-        con = duckdb.connect(database=db_path, read_only=True)
+        with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+            con = duckdb.connect(database=db_path, read_only=True)
 
         # Zone de requête utilisateur
         query = st.text_area("💬 Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10")
 
         if st.button("▶️ Exécuter la requête"):
             try:
-                result = con.execute(query).df()
-                st.dataframe(result, use_container_width=True)
+                with st.spinner("Requête en cours"):
+                    result = con.execute(query).df()
+                    st.dataframe(result, use_container_width=True)
             except Exception as e:
                 st.error(f"❌ Erreur dans la requête : {e}")
 

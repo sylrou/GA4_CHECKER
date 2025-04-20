@@ -6,3 +6,7 @@ primaryColor = "#FCC02D"     # Jaune Starfox
 backgroundColor = "#0e1117"
 secondaryBackgroundColor = "#1c1f26"
 textColor = "#FFFFFF"
+
+[server]
+maxUploadSize = 1024
+
