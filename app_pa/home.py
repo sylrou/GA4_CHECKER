@@ -13,6 +13,29 @@ def show():
     ---
     """)
 
+    # Comment utiliser l'application
+    st.markdown("""
+    ### Comment utiliser l'application ?
+
+    Rendez-vous dans l'onglet **📂 Choisissez votre donnée** pour utiliser le jeu de données de démonstration ou importer le vôtre.
+
+    ### Comment importer votre propre jeu de données ?
+
+    1. Dans BigQuery, effectuez un `SELECT *` filtré pour ne pas dépasser **1 Go** de données.
+    2. Téléchargez le résultat au format **JSON**. Pour cela, enregistrez d'abord les résultats dans votre Google Drive, puis téléchargez-les manuellement.
+    3. Importez ce fichier dans GA4Checker via l’interface.
+
+    ### Accéder aux audits
+
+    Une fois votre fichier importé, vous pouvez explorer vos données via les rapports disponibles.  
+    À ce jour, seul le rapport **🔗 Audit du `page_location`** est disponible.
+    
+    ---
+    """)
+
+    st.markdown("""
+    ### Avancement du projet et mise à jour
+    """)
     # Badge de nouveauté
     st.badge("Nouveau : 20/04/2025")
 
@@ -26,8 +49,6 @@ def show():
 
     Pour les fichiers supérieurs à 1Go, contactez-moi pour une utilisation en local.  
     Cela permet de débloquer la limite de taille imposée par Streamlit (mais reste dépendant des performances de votre machine).
-
-    ---
     """)
 
     # Badge de mise à jour
@@ -42,8 +63,8 @@ def show():
     - URLs en doublon ou trop longues,
     - résumé synthétique par URL.
 
-    👉 Ce module est accessible via l’onglet **Validity : page_location**.
-
+    Ce module est accessible via l’onglet **🔗 Audit du page_location**.
+    
     ---
     """)
 
