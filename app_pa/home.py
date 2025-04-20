@@ -52,7 +52,7 @@ def show():
     """)
 
     # Badge de mise à jour
-    st.badge("Mise à jour : 21/04/2025", icon=":material/check:", color="gray")
+    st.badge("Mise à jour : 18/04/2025", icon=":material/check:", color="gray")
 
     # Description du premier module disponible
     st.markdown("""
