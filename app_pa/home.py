@@ -42,7 +42,7 @@ def show():
     - URLs en doublon ou trop longues,
     - résumé synthétique par URL.
 
-    👉 Ce module est accessible via l’onglet **🔗 Audit du page_location**.
+    👉 Ce module est accessible via l’onglet **Validity : page_location**.
 
     ---
     """)
