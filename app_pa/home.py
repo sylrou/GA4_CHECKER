@@ -4,20 +4,31 @@ def show():
     st.title("Bienvenue sur **GA4 Checker** 🕵️")
     st.markdown("""
     GA4 Checker est une application pensée pour vous accompagner dans l’analyse et l’audit de vos données **Google Analytics 4**, à partir des exports bruts de BigQuery.
-
+    
     ---
+    """)
+    st.badge("New: 20/04/2025")
+    st.markdown("""
+        Vous pouvez maintenant utiliser un jeu de donnée de démonstration pour tester l'application
+        Rendez-vous dans l'onglet dédié pour l'import de votre fichier ou utiliser la donnée de démonstration
+        
+        Vous pouvez également utilisez la fonction d'exploration libre pour consulter votre jeu de donnée
 
-    ### 🚀 Nouveauté (18/04/2025)
-
+        ---
+        """)
+    st.badge("Update: 18/04/2025", icon=":material/check:", color="gray")
+    st.markdown("""
     Le **premier module** est désormais disponible en phase de test :
-    🔍 **Chapitre "Validity"** – Analyse des URLs `page_location` de votre GA4 pour en extraire :
+    🔍 Vous pouvez extraire et analyser les URLs `page_location` du dataset avec les informations suivantes :
     - les paramètres présents,
     - les domaines et fragments,
     - les URLs en doublon ou trop longues,
     - ainsi qu'un résumé synthétique par URL.
 
     ---
+    """)
 
+    st.markdown("""
     ### 📚 Une approche par chapitres
 
     Cette application évoluera progressivement sous la forme de **chapitres** :  
