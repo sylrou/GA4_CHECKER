@@ -5,8 +5,8 @@ import duckdb
 import pandas as pd
 import os
 
-from urllib.parse import urlparse, parse_qsl
-from collections import Counter
+from services.url_inspector import URLInspector
+from services.query_classifier import *
 
 def show():
     st.title("🔍 Audit des paramètres d'URL (`page_location`)")
@@ -20,51 +20,6 @@ def show():
     # --- Connexion à la base de données (compute) ---
     with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
         con = duckdb.connect(database=db_path, read_only=True)
-
-    # --- Classe utilitaire (compute) : permet d'analyser une URL et d'en extraire des caractéristiques ---
-    class URLInspector:
-        def __init__(self, url):
-            self.url = url
-            self.parsed = urlparse(url)
-            self.query_params = parse_qsl(self.parsed.query, keep_blank_values=True)
-
-        def is_https(self):
-            return self.parsed.scheme == "https"
-
-        def get_netloc(self):
-            return self.parsed.netloc
-
-        def get_duplicate_params(self):
-            keys = [k for k, _ in self.query_params]
-            return [k for k, v in Counter(keys).items() if v > 1]
-
-        def get_param_keys(self):
-            return [k for k, _ in self.query_params]
-
-        def get_unique_param_keys(self):
-            return set(k for k, _ in self.query_params)
-
-        def get_fragment(self):
-            return self.parsed.fragment
-
-        def has_fragment(self):
-            return bool(self.parsed.fragment)
-
-        def is_url_too_long(self, limit=1000):
-            return len(self.url) > limit
-
-        def summary(self):
-            return {
-                "url": self.url,
-                "https": self.is_https(),
-                "hostname": self.get_netloc(),
-                "param_count": len(self.query_params),
-                "param_keys": self.get_param_keys(),
-                "dup_params": self.get_duplicate_params(),
-                "fragment": self.get_fragment(),
-                "has_fragment": self.has_fragment(),
-                "url_too_long": self.is_url_too_long()
-            }
 
     # --- Requête SQL (compute) : extraire les valeurs uniques de 'page_location' ---
     st.subheader("📍 Extraction des URLs depuis 'page_location'")
@@ -95,7 +50,14 @@ def show():
     # --- Affichage (display) : liste des paramètres détectés ---
     st.subheader("🧾 Liste des paramètres détectés")
     query_df = pd.DataFrame(sorted(list(simple_query)), columns=["query_param"])
-    st.metric(label="Nombre de paramètres uniques", value=len(simple_query), border=True)
+    query_df["categorie"] = query_df["query_param"].apply(classify_query_param)
+
+    colA, colB, colC = st.columns(3)
+    colA.metric(label="Nombre de paramètres uniques", value=len(simple_query), border=True)
+    nb_crit = (query_df["categorie"] == "critical").sum()
+    colB.metric(label="Nombre de paramètres critiques", value=nb_crit, border=True)
+    nb_other = (query_df["categorie"] == "other").sum()
+    colC.metric(label="Nombre de paramètres autres", value=nb_other, border=True)
     st.data_editor(query_df, use_container_width=True)
     st.download_button("📥 Télécharger les paramètres", data=query_df.to_csv(index=False), file_name="ga4_query_params.csv")
 
