@@ -17,7 +17,7 @@ def show():
     st.markdown("""
     ### Comment utiliser l'application ?
 
-    Rendez-vous dans l'onglet **📂 Choisissez votre donnée** pour utiliser le jeu de données de démonstration ou importer le vôtre.
+    Rendez-vous dans l'onglet **📂 Choisissez votre donnée** pour utiliser le jeu de données de démonstration de mon ancien site ou importer le vôtre.
 
     ### Comment importer votre propre jeu de données ?
 
@@ -28,7 +28,12 @@ def show():
     ### Accéder aux audits
 
     Une fois votre fichier importé, vous pouvez explorer vos données via les rapports disponibles.  
-    À ce jour, seul le rapport **🔗 Audit du `page_location`** est disponible.
+    Vous pouvez maintenant utiliser les rapports suivants :
+    
+    **🗺️ Premier coup d'oeil**
+    **🔗 Audit du page_location**
+    
+    ou bien faire vos requêtes via l'outil **🔍 Exploration libre**
     
     ---
     """)
