@@ -5,6 +5,11 @@ import os
 def show():
     st.header("📥 Importer les données GA4")
 
+    st.markdown("""
+        Vous pouvez utiliser et importer votre propre donnée, mais si vous n'avez pas de fichier sous la main,  
+        je vous invite à activer le jeu de données de démonstration, issu d’un ancien site.
+        """)
+
     if os.path.exists(os.path.abspath("local_analysis.json")):
         data_file = os.path.abspath("local_analysis.json")
         st.success("Mode local activé, le jeu de donnée local est sélectionné ✅")

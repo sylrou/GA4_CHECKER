@@ -7,7 +7,7 @@ from services import sql_requests
 from services import google_analytics_catalogue as dc
 
 def show():
-    st.title("🧪 Audit technique du dataset GA4")
+    st.title("🗺️ Overview - Premier coup d'oeil")
 
     # Vérification de la base de données
     db_path = os.path.abspath("ga4.duckdb")
