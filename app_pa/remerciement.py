@@ -31,6 +31,7 @@ def show():
     - **Christian Laville**
     - **Clément Tabard**
     - **Benjamin Dubreu et dataUpskill**
+    - **Gaël Penessot et son livre**
     - **L'AADF - Association des analystes de France**
     
     - **Toutes les personnes qui partagent leurs idées, retours, et leur temps.**

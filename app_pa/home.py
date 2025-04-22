@@ -37,7 +37,24 @@ def show():
     ### Avancement du projet et mise à jour
     """)
     # Badge de nouveauté
-    st.badge("Nouveau : 20/04/2025")
+    st.badge("Nouveau : 22/04/2025")
+    # Nouvelle mise à jour : module d'audit technique
+    st.markdown("""
+
+    Une nouvelle page fait son apparition : **Premier coup d'oeil**  
+    Elle permet d’obtenir une **vue d’ensemble immédiate** sur les éléments clés de votre fichier :
+    - Nombre d’utilisateurs et de sessions  
+    - Période couverte  
+    - Liste des événements détectés  
+    - Typologie supposée du dataset (e-commerce, lead gen…)  
+    - Événements recommandés manquants  
+    - Paramètres d’événements (`event_params`) distincts
+
+    Ce module est idéal pour un **premier diagnostic rapide**, avant d’explorer plus en détail chaque aspect de vos données.
+    """)
+
+    # Badge de mise à jour
+    st.badge("Mise à jour : 20/04/2025", icon=":material/check:", color="gray")
 
     # Bloc sur la démonstration et l'import
     st.markdown("""
