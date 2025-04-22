@@ -9,14 +9,18 @@ class URLInspector:
         self.query_params = parse_qsl(self.parsed.query, keep_blank_values=True)
 
     def is_https(self):
-        return self.parsed.scheme == "https"
+        if self.parsed.scheme == "https":
+            return "✅"
+        else:
+            return "❌"
 
     def get_netloc(self):
         return self.parsed.netloc
 
     def get_duplicate_params(self):
         keys = [k for k, _ in self.query_params]
-        return [k for k, v in Counter(keys).items() if v > 1]
+        x_list = [k for k, v in Counter(keys).items() if v > 1]
+        return x_list
 
     def get_param_keys(self):
         return [k for k, _ in self.query_params]
@@ -28,10 +32,14 @@ class URLInspector:
         return self.parsed.fragment
 
     def has_fragment(self):
-        return bool(self.parsed.fragment)
+        if bool(self.parsed.fragment):
+            return "Yes"
+        else:
+            return "No"
 
-    def is_url_too_long(self, limit=1000):
-        return len(self.url) > limit
+    def url_len(self):
+        x = len(self.url)
+        return x
 
     def summary(self):
         return {
@@ -43,5 +51,5 @@ class URLInspector:
             "dup_params": self.get_duplicate_params(),
             "fragment": self.get_fragment(),
             "has_fragment": self.has_fragment(),
-            "url_too_long": self.is_url_too_long()
+            "url_too_long": self.url_len()
         }
