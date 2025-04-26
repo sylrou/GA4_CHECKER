@@ -34,7 +34,7 @@ Légende pour les phases :
 
 ### 🔧 Phase 0 – Préparation du dataset
 - 🛠️ Préparer un data catalogue GA4 à partir des specs officielles Google
-- [] Identifier le type de dataset via les événements (lead_gen, ecommerce, game...)
+- 🔵 Identifier le type de dataset via les événements (lead_gen, ecommerce, game...)
 - 🔵 Conditionner les recommandations en fonction du type de dataset
 - 🔵 Gérer l'importation et l'affichage des informations basiques de l'extraction dans streamlit
 - 🔵 Gérer la mise en place de la partie validity dans streamlit avec la librairie urllib.parse
@@ -128,7 +128,7 @@ Contrôles à implémenter :
 - ✅ Interface interactive via Streamlit pour `steamlist` (events) et `validity` (params URL)
 - ✅ Séparation des fichiers par module (préparation d’un menu global Streamlit)
 - 🛠️ Faire une page spécifique pour l'import de la donnée
-- [] Proposer un jeu de donnée de test pour l'utilisateur qui n'a pas de donnée sous la main et favoriser l'onboarding
+- 🔵 Proposer un jeu de donnée de test pour l'utilisateur qui n'a pas de donnée sous la main et favoriser l'onboarding
 
 ## 📦 Environnement technique
 - Python 3.11+
