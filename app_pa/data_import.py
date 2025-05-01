@@ -10,6 +10,8 @@ def show():
         je vous invite à activer le jeu de données de démonstration, issu d’un ancien site.
         """)
 
+    #st.markdown('Importez votre propre donnée en suivant ce tutoriel : Lien vers le tutoriel')
+
     if os.path.exists(os.path.abspath("local_analysis.json")):
         data_file = os.path.abspath("local_analysis.json")
         st.success("Mode local activé, le jeu de donnée local est sélectionné ✅")
@@ -51,3 +53,5 @@ def show():
 
     st.success("Base DuckDB créée avec succès ✅")
     st.info(f"📂 Fichier sauvegardé : `{db_path}`")
+    #st.markdown('### Vous pouvez maintenant vous dirigez vers :')
+    #st.page_link("app_pa/overview.py", label=" Premier coup d'oeil", icon="🗺️")

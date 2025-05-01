@@ -13,7 +13,7 @@ def show():
             con = duckdb.connect(database=db_path, read_only=True)
 
         # Zone de requête utilisateur
-        query = st.text_area("💬 Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10")
+        query = st.text_area("💬 Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10", height=500)
 
         if st.button("▶️ Exécuter la requête"):
             try:
