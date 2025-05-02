@@ -1,0 +1,50 @@
+[[pages]]
+name = "Section - Introduction :"
+icon = "📚"
+is_section = true
+
+[[pages]]
+path = "add_step/home.py"
+name = "Accueil"
+icon = "🏠"
+
+[[pages]]
+path = "add_step/data_import.py"
+name = "Importer votre fichier"
+icon = "📂"
+
+[[pages]]
+name = "Section - Analyses :"
+icon = "📚"
+is_section = true
+
+
+[[pages]]
+path = "add_step/overview.py"
+name = "Analyse - Vue globale"
+icon = "🗺️"
+
+[[pages]]
+path = "add_step/audit_page_location.py"
+name = "Analyse - page_location"
+icon = "🔗"
+
+[[pages]]
+path = "add_step/explore.py"
+name = "Exploration libre"
+icon = "🔍"
+
+[[pages]]
+name = "Section - Autres :"
+icon = "📚"
+is_section = true
+
+[[pages]]
+path = "add_step/thank_you.py"
+name = "Remerciement"
+icon = "🤝"
+
+[[pages]]
+path = "add_step/feedback.py"
+name = "Demandez une feature"
+icon = "📤"

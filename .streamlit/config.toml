@@ -1,12 +1,25 @@
 # .streamlit/config.toml
 
+#[theme]
+#base = "dark"
+#primaryColor = "#FCC02D"
+#backgroundColor = "#0e1117"
+#secondaryBackgroundColor = "#1c1f26"
+#textColor = "#FFFFFF"
+
 [theme]
 base = "dark"
-primaryColor = "#FCC02D"     # Jaune Starfox
-backgroundColor = "#0e1117"
-secondaryBackgroundColor = "#1c1f26"
-textColor = "#FFFFFF"
+primaryColor = "#4C7364"  # vert doux = couleur d'accent
+backgroundColor = "#070D0C"  # noir profond
+secondaryBackgroundColor = "#1F2A25"  # vert très sombre pour trancher un peu plus
+textColor = "#D9CCA7"  # beige clair, très lisible
 
 [server]
 maxUploadSize = 1024
 
+# Les couleurs du logo :
+#    Noir : #070D0C
+#    Vert : #4C7364
+#    Beige clair : #D9CCA7
+#    Marron foncé : #594A2D
+#    Marron clair : #BFB093
