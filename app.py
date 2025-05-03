@@ -2,7 +2,7 @@ import streamlit as st
 
 from st_pages import add_page_title, get_nav_from_toml
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_icon="🕵️")
 
 with st.sidebar:
     st.image("assets/logo.png", width=150)
