@@ -20,13 +20,18 @@ is_section = true
 
 
 [[pages]]
-path = "add_step/overview.py"
+path = "add_step/audit_overview.py"
 name = "Analyse - Vue globale"
 icon = "🗺️"
 
 [[pages]]
 path = "add_step/audit_page_location.py"
 name = "Analyse - page_location"
+icon = "🔗"
+
+[[pages]]
+path = "add_step/audit_event_params.py"
+name = "Analyse - event_params"
 icon = "🔗"
 
 [[pages]]

@@ -24,18 +24,47 @@ Rendez-vous dans l'onglet **📂 Importer les données GA4** pour utiliser le je
 ### Accéder aux audits
 
 Une fois votre fichier importé, vous pouvez explorer vos données via les rapports disponibles.  
-Vous pouvez maintenant utiliser les rapports suivants ou l'outil d'exploration de votre donnée.
+Vous pouvez maintenant utiliser les rapports dans la section analyses ou l'outil d'exploration libre.
 """)
 
-col1, col2, col3 = st.columns(3)
+st.markdown("""---""")
 
-with col1:
-    st.page_link("add_step/overview.py", label="Analyse - Vue globale", icon='🔗')
-with col2:
-    st.page_link("add_step/audit_page_location.py", label="Voir l'analyse page_location", icon='🔗')
-with col3:
-    st.page_link("add_step/explore.py", label="Outil d'exploration", icon='🔗')
+# Badge de mise à jour
+st.badge("Nouveau : 03/05/2025")
 
+# Bloc sur la nouvelle fonctionnalité d'analyse des custom dimensions
+st.markdown("""
+Une **nouvelle fonctionnalité** fait son apparition :  
+🎯 **Audit des dimensions personnalisées (`event_params`)**
+
+Cette page vous permet d’analyser la **présence et la cohérence des dimensions personnalisées** dans vos événements GA4.
+
+### À quoi ça sert ?
+
+Certaines dimensions personnalisées (ex. `category_page`, `user_type`, etc.) devraient apparaître **systématiquement** sur certains événements comme `page_view`.  
+Ce module vous aide à **vérifier si c’est bien le cas**, et à identifier les anomalies.
+
+### Ce que vous pouvez faire :
+
+- Choisir dynamiquement une dimension personnalisée à analyser
+- Comparer le nombre d’événements avec et sans cette dimension
+- Visualiser les résultats dans un **graphique empilé** :
+    - 🟩 Vert : la dimension est bien présente
+    - 🟥 Rouge : la dimension est absente (delta)
+- Filtrer les événements avec un delta significatif pour se concentrer sur les problèmes les plus importants
+- Exporter les résultats en CSV
+
+Ce module vous permet de détecter rapidement :
+- des erreurs dans le dataLayer ou dans GTM,
+- des implémentations partielles,
+- ou des données absentes non conformes au plan de marquage.
+
+➡️ Accédez à ce rapport depuis:
+""")
+
+# Lien vers la nouvelle page
+with st.container():
+    st.page_link("add_step/audit_event_params.py", label="Analyse - event_params", icon="🔗")
 
 st.markdown("""---""")
 
@@ -58,6 +87,7 @@ st.markdown("""
 ### Avancement du projet et mise à jour
 """)
 
+st.markdown("""---""")
 # Badge de mise à jour
 st.badge("Mise à jour : 22/04/2025", icon=":material/check:", color="gray")
 # Nouvelle mise à jour : module d'audit technique
@@ -75,6 +105,7 @@ Elle permet d’obtenir une **vue d’ensemble immédiate** sur les éléments c
 Ce module est idéal pour un **premier diagnostic rapide**, avant d’explorer plus en détail chaque aspect de vos données.
 """)
 
+st.markdown("""---""")
 # Badge de mise à jour
 st.badge("Mise à jour : 20/04/2025", icon=":material/check:", color="gray")
 
@@ -89,7 +120,7 @@ via des requêtes SQL.
 Pour les fichiers supérieurs à 1Go, contactez-moi pour une utilisation en local.  
 Cela permet de débloquer la limite de taille imposée par Streamlit (mais reste dépendant des performances de votre machine).
 """)
-
+st.markdown("""---""")
 # Badge de mise à jour
 st.badge("Mise à jour : 18/04/2025", icon=":material/check:", color="gray")
 

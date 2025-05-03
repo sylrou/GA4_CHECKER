@@ -6,8 +6,11 @@ import os
 
 from services.url_inspector import URLInspector
 from services.query_classifier import *
+from services import sql_requests
 
-st.title("🔍 Audit des paramètres d'URL (`page_location`)")
+GA4_DATA = "ga4_data"
+
+st.title("🔍 Analyse - `page_location` du dataset")
 
 # --- Étape de vérification (compute) : vérifier l'existence de la base de données ---
 db_path = os.path.abspath("../ga4.duckdb")
@@ -20,33 +23,27 @@ with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
     con = duckdb.connect(database=db_path, read_only=True)
 
 # --- Requête SQL (compute) : extraire les valeurs uniques de 'page_location' ---
-st.subheader("📍 Extraction des URLs depuis 'page_location'")
-query = '''
-    SELECT DISTINCT
-        unnest.value.string_value AS page_location
-    FROM ga4_data, 
-    LATERAL UNNEST(event_params) AS unnest
-    WHERE unnest.key = 'page_location'
-    AND unnest.value.string_value IS NOT NULL
-'''
+st.subheader("Extraction des URLs depuis 'page_location'")
+
 with st.spinner("Requête en cours..."):
-    df_page_location = con.execute(query).df()
+    df_page_location = con.execute(sql_requests.page_location_extract(GA4_DATA)).df()
 con.close()
 
 # --- Affichage (display) : visualisation des URLs extraites ---
-st.subheader("📋 Liste des 'page_location'")
+st.subheader("Liste des 'page_location'")
 st.metric(label="URLs uniques extraites", value=len(df_page_location), border=True)
 st.data_editor(df_page_location, use_container_width=True)
 st.download_button("📥 Télécharger les URLs", data=df_page_location.to_csv(index=False), file_name="ga4_page_location.csv")
 
 # --- Analyse des paramètres d'URL (compute) ---
-simple_query = set()
-for page in df_page_location['page_location']:
-    inspector = URLInspector(page)
-    simple_query.update(inspector.get_unique_param_keys())
+with st.spinner("🔍 Analyse des paramètres d'URL en cours..."):
+    simple_query = set()
+    for page in df_page_location['page_location']:
+        inspector = URLInspector(page)
+        simple_query.update(inspector.get_unique_param_keys())
 
 # --- Affichage (display) : liste des paramètres détectés ---
-st.subheader("🧾 Liste des paramètres détectés")
+st.subheader("Liste des paramètres détectés")
 query_df = pd.DataFrame(sorted(list(simple_query)), columns=["query_param"])
 query_df["categorie"] = query_df["query_param"].apply(classify_query_param)
 
@@ -60,9 +57,10 @@ st.data_editor(query_df, use_container_width=True)
 st.download_button("📥 Télécharger les paramètres", data=query_df.to_csv(index=False), file_name="ga4_query_params.csv")
 
 # --- Résumé technique par URL (compute) ---
-st.subheader("🧪 Résumé technique par URL")
-summaries = [URLInspector(url).summary() for url in df_page_location['page_location']]
-summary_df = pd.DataFrame(summaries)
+st.subheader("Résumé technique par URL")
+with st.spinner("📊 Génération du résumé technique par URL..."):
+    summaries = [URLInspector(url).summary() for url in df_page_location['page_location']]
+    summary_df = pd.DataFrame(summaries)
 
 # --- Affichage (display) : métriques techniques ---
 col1, col2, col3 = st.columns(3)

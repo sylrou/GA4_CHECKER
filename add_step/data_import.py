@@ -48,9 +48,11 @@ with st.spinner("⏳ Chargement du fichier dans DuckDB..."):
         SELECT * FROM read_ndjson('{data_file}', union_by_name=True)
     """)
 
+    st.dataframe(con.sql("PRAGMA table_info(ga4_data)").df())
+
     con.close()
 
 st.success("Base DuckDB créée avec succès ✅")
 st.info(f"📂 Fichier sauvegardé : `{db_path}`")
 st.markdown('### Vous pouvez maintenant vous dirigez vers :')
-st.page_link("add_step/overview.py", label="Analyse - Vue globale", icon='🔗')
+st.page_link("add_step/audit_overview.py", label="Analyse - Vue globale", icon='🔗')
