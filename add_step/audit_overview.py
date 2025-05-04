@@ -29,14 +29,14 @@ with st.spinner("Connexion à DuckDB..."):
         st.subheader("👤 Nombre d'utilisateurs")
         with st.spinner("Requête en cours..."):
             df_user = con.execute(sql_requests.m_users(GA4_DATA)).fetchone()[0]
-            st.metric("Utilisateurs uniques", df_user if df_user else 0, help="Basé sur user_pseudo_id")
+            st.metric("Utilisateurs uniques", df_user if df_user else 0, help="Basé sur user_pseudo_id", border=True)
 
     # --- Sessions ---
     with sessions_col:
         st.subheader("📊 Nombre de sessions")
         with st.spinner("Requête en cours..."):
             df_session = con.execute(sql_requests.m_sessions(GA4_DATA)).fetchone()[0]
-            st.metric("Sessions uniques", df_session if df_session else 0, help="Basé sur session_id")
+            st.metric("Sessions uniques", df_session if df_session else 0, help="Basé sur session_id", border=True)
 
     # --- Dates ---
     with date_col:
@@ -44,7 +44,7 @@ with st.spinner("Connexion à DuckDB..."):
         with st.spinner("Requête en cours..."):
             df_date = con.execute(sql_requests.m_date(GA4_DATA)).fetchone()
             df_event_date = con.execute(sql_requests.d_event_date(GA4_DATA)).fetchdf()
-            st.metric("Nombre de dates différentes", df_date[0])
+            st.metric("Nombre de dates différentes", df_date[0], border=True)
             st.info(f"Période du {min(df_event_date['event_date'])} au {max(df_event_date['event_date'])}")
 
 
@@ -55,9 +55,9 @@ with st.spinner("Connexion à DuckDB..."):
 
     event_col1, event_col2, event_col3 = st.columns(3)
     with event_col1:
-        st.metric("Nombre d'événements différents", len(df_event_name))
+        st.metric("Nombre d'événements différents", len(df_event_name), border=True)
     with event_col2:
-        st.metric("Nombre total d'événements", df_event_name['event_count'].sum())
+        st.metric("Nombre total d'événements", df_event_name['event_count'].sum(), border=True)
     with st.expander("Afficher les événements"):
         st.dataframe(df_event_name, use_container_width=True)
 
@@ -98,7 +98,7 @@ with st.spinner("Connexion à DuckDB..."):
     with st.spinner("Requête en cours..."):
         df_event_params = con.execute(sql_requests.distinct_event_params_list(GA4_DATA)).fetchdf()
         key_event_params_list = sorted([k.replace('"', '') for k in df_event_params['key']])
-        st.metric("Paramètres distincts", len(key_event_params_list))
+        st.metric("Paramètres distincts", len(key_event_params_list), border=True)
         st.data_editor(pd.DataFrame(key_event_params_list, columns=["event_param"]), use_container_width=True)
         st.download_button("📥 Télécharger les event_params", data=pd.DataFrame(key_event_params_list).to_csv(index=False), file_name="ga4_event_params.csv")
 
