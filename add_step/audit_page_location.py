@@ -3,11 +3,12 @@ import streamlit as st
 import duckdb
 import pandas as pd
 import os
+import altair as alt
 
 from services.url_inspector import URLInspector
 from services.query_classifier import *
 from services import sql_requests
-from assets.ui import ui_warning
+from assets.ui import ui_warning, ui_caption
 
 GA4_DATA = "ga4_data"
 
@@ -71,3 +72,5 @@ col3.metric(label="Nombre max de paramètres", value=summary_df['param_count'].m
 
 st.data_editor(summary_df, use_container_width=True)
 st.download_button("📥 Télécharger le résumé complet", data=summary_df.to_csv(index=False), file_name="ga4_url_summary.csv")
+
+ui_caption()

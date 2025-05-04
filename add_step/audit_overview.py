@@ -2,10 +2,13 @@ import streamlit as st
 import duckdb
 import pandas as pd
 import os
+import string
+import altair as alt
 
 from services import sql_requests
 from services import google_analytics_catalogue as dc
-from assets.ui import ui_warning
+from assets.ui import ui_warning, ui_caption
+from services.functions import generate_letter_labels
 
 st.title("🗺️ Analyse - Vue globale")
 
@@ -59,7 +62,26 @@ with st.spinner("Connexion à DuckDB..."):
     with event_col2:
         st.metric("Nombre total d'événements", df_event_name['event_count'].sum(), border=True)
     with st.expander("Afficher les événements"):
-        st.dataframe(df_event_name, use_container_width=True)
+        df_event_name_sorted = df_event_name.copy().sort_values("event_count", ascending=False)
+
+        #Préparation du graphique altair
+        base = alt.Chart(df_event_name_sorted).encode(
+            x="event_count:Q",
+            y=alt.Y("event_name:N", sort="-x")
+        )
+
+        bars = base.mark_bar(color="#00cc66")
+
+        labels = base.mark_text(
+            align="left",
+            baseline="middle",
+            dx=3, # décalage horizontal pour ne pas coller à la barre
+            color = "white"
+        ).encode(
+            text="event_count:Q"
+        )
+        #Affichage du graphique
+        st.altair_chart(bars + labels, use_container_width=True)
 
     # --- Typologie du dataset ---
     p_ecommerce = sum([1 for k in dc.GA4_RECOMMENDED_EVENT_ECOMMERCE.keys() if k in df_event_name['event_name'].values])
@@ -103,3 +125,5 @@ with st.spinner("Connexion à DuckDB..."):
         st.download_button("📥 Télécharger les event_params", data=pd.DataFrame(key_event_params_list).to_csv(index=False), file_name="ga4_event_params.csv")
 
     con.close()
+
+ui_caption()

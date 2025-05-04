@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 from services import sql_requests
-from assets.ui import ui_warning
+from assets.ui import ui_warning, ui_caption, ui_sep
 
 GA4_DATA = "ga4_data"
 
@@ -49,11 +49,11 @@ with st.spinner("📊 Chargement des custom dimensions..."):
 # --- Liste unique des clés disponibles ---
 available_keys = sorted(df["key"].unique())
 
-st.markdown("""---""")
+ui_sep()
+
 # --- Sélecteur de custom dimension ---
 st.markdown("""### 🔑 Choisissez la clé du event_params à analyser""")
 selected_key = st.selectbox("Lorem", options=available_keys, label_visibility="hidden")
-st.markdown("""---""")
 
 # --- Filtrage du DataFrame ---
 filtered_df = df[df["key"] == selected_key].copy()
@@ -87,7 +87,10 @@ Un **delta important** (barre rouge large) peut signaler :
 
 👉 **Objectif** : réduire au maximum la barre rouge pour garantir une donnée fiable et complète.
 """)
+ui_sep()
 
-st.bar_chart(filtered_df.set_index("event_name")[["custom_dim_number", "delta"]], color=["#00cc66","#cc0000"], horizontal=True, )
+st.bar_chart(filtered_df.set_index("event_name")[["custom_dim_number", "delta"]], color=["#00cc66","#cc0000"], horizontal=True)
 
 con.close()
+
+ui_caption()
