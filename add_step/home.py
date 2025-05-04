@@ -1,19 +1,20 @@
 import streamlit as st
+from assets.ui import ui_footer, ui_btn_link, ui_sep
 
-st.title('Bienvenue sur GA4 Checker 🕵️')
+st.title('Bienvenue sur GA4 Checker 🕵️ - 100% Gratuit & 100% Open source')
 
 # Introduction générale
 st.markdown("""
 GA4 Checker est une application conçue pour vous accompagner dans l’analyse et l’audit de vos données **Google Analytics 4**, à partir des exports bruts de BigQuery.
-
----
 """)
+
+ui_sep()
 
 # Comment utiliser l'application
 st.markdown("""
 ### Comment utiliser l'application ?
 
-Rendez-vous dans l'onglet **📂 Importer les données GA4** pour utiliser le jeu de données de démonstration de mon ancien site ou importer le vôtre.
+Rendez-vous dans l'onglet **📂 Importer votre fichier** pour utiliser le jeu de données de démonstration de mon ancien site ou importer le vôtre.
 
 ### Comment importer votre propre jeu de données ?
 
@@ -27,25 +28,61 @@ Une fois votre fichier importé, vous pouvez explorer vos données via les rappo
 Vous pouvez maintenant utiliser les rapports dans la section analyses ou l'outil d'exploration libre.
 """)
 
-st.markdown("""---""")
+ui_sep()
 
-# Badge de mise à jour
-st.badge("Nouveau : 03/05/2025")
+# --- Mise à jour du mois en cours ---
+st.markdown("""
+## Mise à jour du mois de mai
+""")
+st.badge("Nouvelle mise à jour du 04/05/2025")
+st.markdown("""
+Une **nouvelle interface d'exploration SQL** vient enrichir votre outil d'analyse GA4 !  
+📊 **Explorez librement vos données ou utilisez nos requêtes pré-remplies.**
+""")
 
-# Bloc sur la nouvelle fonctionnalité d'analyse des custom dimensions
+st.markdown("""
+### 🧠 Exploration SQL libre améliorée
+Vous pouvez maintenant :
+- 🧾 **Écrire vos propres requêtes SQL** dans un éditeur enrichi avec **coloration syntaxique**
+- 🎨 Choisir un thème foncé plus lisible (`tomorrow_night_blue`)
+- 🧩 **Utiliser une liste de requêtes pré-enregistrées** pour obtenir rapidement des insights utiles
+
+### 📋 Requêtes pré-enregistrées disponibles
+Accédez en un clic à des métriques clés comme :
+- Le nombre total de sessions
+- Le nombre d’utilisateurs uniques
+- Les événements distincts
+- Les pages consultées (`page_location`)
+- Et bien plus…
+
+### 🛠️ Pourquoi c’est utile ?
+Cette nouvelle section permet :
+- de **tester vos hypothèses** directement sur vos exports JSON,
+- de **vérifier rapidement la qualité de vos données**,
+- ou tout simplement d’explorer votre tracking GA4 sans quitter l’interface.
+
+➡️ Allez tester la nouvelle interface via l’onglet **Exploration SQL libre** dans le menu.
+""")
+
+ui_btn_link("add_step/explore.py", "Exploration libre")
+
+ui_sep()
+
+# --- Mise à jour du mois en cours ---
+st.badge("Nouvelle mise à jour du 03/05/2025")
 st.markdown("""
 Une **nouvelle fonctionnalité** fait son apparition :  
 🎯 **Audit des dimensions personnalisées (`event_params`)**
+""")
 
+st.markdown("""
 Cette page vous permet d’analyser la **présence et la cohérence des dimensions personnalisées** dans vos événements GA4.
 
 ### À quoi ça sert ?
-
 Certaines dimensions personnalisées (ex. `category_page`, `user_type`, etc.) devraient apparaître **systématiquement** sur certains événements comme `page_view`.  
 Ce module vous aide à **vérifier si c’est bien le cas**, et à identifier les anomalies.
 
 ### Ce que vous pouvez faire :
-
 - Choisir dynamiquement une dimension personnalisée à analyser
 - Comparer le nombre d’événements avec et sans cette dimension
 - Visualiser les résultats dans un **graphique empilé** :
@@ -59,18 +96,13 @@ Ce module vous permet de détecter rapidement :
 - des implémentations partielles,
 - ou des données absentes non conformes au plan de marquage.
 
-➡️ Accédez à ce rapport depuis:
+➡️ Accédez à ce rapport depuis :
 """)
 
-# Lien vers la nouvelle page
-with st.container():
-    st.page_link("add_step/audit_event_params.py", label="Analyse - event_params", icon="🔗")
+ui_btn_link("add_step/audit_event_params.py","Analyse - event_params")
 
-st.markdown("""---""")
-
+# --- Mise à jour du mois en cours ---
 st.badge("Nouveau : 02/05/2025")
-
-# Bloc sur les nouveautés du 02/05/2025 : Grosse refonte de la navigation
 st.markdown("""
 L'application évolue pour offrir une expérience plus fluide et intuitive :
 
@@ -84,80 +116,62 @@ Merci d'avance pour vos retours 🙌
 """)
 
 st.markdown("""
-### Avancement du projet et mise à jour
+    ## Mises à jour des mois précédents
 """)
+# --- Mises à jour précédentes ---
+with st.expander("📂 Mise à jour du 22/04/2025 - Vue d'ensemble du fichier"):
+    st.badge("Mise à jour : 22/04/2025", icon=":material/check:", color="gray")
+    st.markdown("""
+    Une nouvelle page fait son apparition : **Premier coup d'oeil**  
+    Elle permet d’obtenir une **vue d’ensemble immédiate** sur les éléments clés de votre fichier :
+    - Nombre d’utilisateurs et de sessions  
+    - Période couverte  
+    - Liste des événements détectés  
+    - Typologie supposée du dataset (e-commerce, lead gen…)  
+    - Événements recommandés manquants  
+    - Paramètres d’événements (`event_params`) distincts
 
-st.markdown("""---""")
-# Badge de mise à jour
-st.badge("Mise à jour : 22/04/2025", icon=":material/check:", color="gray")
-# Nouvelle mise à jour : module d'audit technique
-st.markdown("""
+    Ce module est idéal pour un **premier diagnostic rapide**, avant d’explorer plus en détail chaque aspect de vos données.
+    """)
+with st.expander("📂 Mise à jour du 20/04/2025 - Données de démonstration"):
+    st.badge("Mise à jour : 20/04/2025", icon=":material/check:", color="gray")
+    st.markdown("""
+    Vous pouvez désormais utiliser un jeu de données de démonstration pour tester l'application.  
+    Rendez-vous dans l’onglet dédié pour importer votre propre fichier ou explorer l'exemple fourni.
 
-Une nouvelle page fait son apparition : **Premier coup d'oeil**  
-Elle permet d’obtenir une **vue d’ensemble immédiate** sur les éléments clés de votre fichier :
-- Nombre d’utilisateurs et de sessions  
-- Période couverte  
-- Liste des événements détectés  
-- Typologie supposée du dataset (e-commerce, lead gen…)  
-- Événements recommandés manquants  
-- Paramètres d’événements (`event_params`) distincts
+    Il est également possible d’utiliser la fonction d’exploration libre pour consulter en détail votre jeu de données
+    via des requêtes SQL.
 
-Ce module est idéal pour un **premier diagnostic rapide**, avant d’explorer plus en détail chaque aspect de vos données.
-""")
+    Pour les fichiers supérieurs à 1Go, contactez-moi pour une utilisation en local.  
+    Cela permet de débloquer la limite de taille imposée par Streamlit (mais reste dépendant des performances de votre machine).
+    """)
+with st.expander("📂 Mise à jour du 18/04/2025 - Audit du page_location"):
+    st.badge("Mise à jour : 18/04/2025", icon=":material/check:", color="gray")
+    st.markdown("""
+    Le **premier module** est désormais disponible en phase de test :  
+    🔍 Il vous permet d’extraire et d’analyser les URLs `page_location` du dataset, avec les informations suivantes :
+    - paramètres présents,
+    - domaines et fragments,
+    - URLs en doublon ou trop longues,
+    - résumé synthétique par URL.
 
-st.markdown("""---""")
-# Badge de mise à jour
-st.badge("Mise à jour : 20/04/2025", icon=":material/check:", color="gray")
+    Ce module est accessible via l’onglet **🔗 Audit du page_location**.
+    """)
 
-# Bloc sur la démonstration et l'import
-st.markdown("""
-Vous pouvez désormais utiliser un jeu de données de démonstration pour tester l'application.  
-Rendez-vous dans l’onglet dédié pour importer votre propre fichier ou explorer l'exemple fourni.
-
-Il est également possible d’utiliser la fonction d’exploration libre pour consulter en détail votre jeu de données
-via des requêtes SQL.
-
-Pour les fichiers supérieurs à 1Go, contactez-moi pour une utilisation en local.  
-Cela permet de débloquer la limite de taille imposée par Streamlit (mais reste dépendant des performances de votre machine).
-""")
-st.markdown("""---""")
-# Badge de mise à jour
-st.badge("Mise à jour : 18/04/2025", icon=":material/check:", color="gray")
-
-# Description du premier module disponible
-st.markdown("""
-Le **premier module** est désormais disponible en phase de test :  
-🔍 Il vous permet d’extraire et d’analyser les URLs `page_location` du dataset, avec les informations suivantes :
-- paramètres présents,
-- domaines et fragments,
-- URLs en doublon ou trop longues,
-- résumé synthétique par URL.
-
-Ce module est accessible via l’onglet **🔗 Audit du page_location**.
-
----
-""")
+ui_sep()
 
 # Présentation du fonctionnement par chapitres
 st.markdown("""
-### 📚 Une approche par chapitres
+### 📚 Une application en évolution continue
 
-Cette application évoluera progressivement sous la forme de **chapitres**.  
+Cette application évoluera progressivement sous la forme de **feature**.  
 Chaque module viendra enrichir votre audit GA4, avec un focus précis (comme un livre que vous écrivez, page après page).
 
-🎯 **Objectif final :** vous permettre d’automatiser un audit complet GA4 à partir des données brutes, **sans modification manuelle** de la structure source.
-
----
-
-🧪 N'hésitez pas à tester le module actuel et à partager vos retours.  
-D'autres chapitres arrivent très bientôt ! 🚧
+🎯 **Objectif final :** vous permettre d’automatiser un audit complet GA4 à partir des données brutes, **sans modification manuelle** de la structure source 
+ou une exploration via des requêtes pré-programmées.
 """)
 
+ui_sep()
+
 # Pied de page avec contact
-st.markdown("""
-    <div class="footer">
-        💬 Une question, un besoin ou envie d’échanger sur la donnée ?<br>
-        👉 <a href="https://www.linkedin.com/in/empirik-sylvain-rouxel/" target="_blank">Contactez-moi sur LinkedIn</a><br><br>
-        Créé avec ❤️ par <strong>Sylvain Rouxel</strong>
-    </div>
-""", unsafe_allow_html=True)
+ui_footer()

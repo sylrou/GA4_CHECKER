@@ -1,71 +1,99 @@
-'''
-Here is all function with the requests
-'''
-
-
 def m_sessions(table_name):
-    '''
-    Out : Number of sessions
-    '''
-    query = f'''
+    """
+    Génère une requête SQL pour calculer le nombre de sessions distinctes.
+
+    Cette requête identifie les sessions en concaténant `user_pseudo_id` et
+    la valeur du paramètre `ga_session_id`.
+
+    Args:
+        table_name (str): Le nom de la table GA4 (ex. 'ga4_data').
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
+    try:
+        query = f'''
             WITH prep as (
                 SELECT
-                    user_pseudo_id
-                    ,unnest.key as key
-                    ,unnest.value.int_value as int_value
+                    user_pseudo_id,
+                    unnest.key as key,
+                    unnest.value.int_value as int_value
                 FROM 
                     {table_name}, 
                     LATERAL UNNEST(event_params)
                 WHERE key = 'ga_session_id'
             )
             SELECT
-                COUNT(DISTINCT CONCAT(user_pseudo_id,int_value))
+                COUNT(DISTINCT CONCAT(user_pseudo_id, int_value))
             FROM
                 prep
-    '''
-    return query
+        '''
+        return query
+    except Exception as e:
+        print(f'Error in m_sessions: {e}')
+        return None
 
 
 def d_event_date(table_name):
-    '''
-    I/O : Table / Date DF
-    '''
+    """
+    Extrait toutes les dates d'événements distinctes.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f'''
         SELECT
-            DISTINCT(event_date) as event_date
+            DISTINCT(event_date) AS event_date
         FROM 
             {table_name}
         '''
         return query
     except Exception as e:
         print(f'Error in d_event_date: {e}')
+        return None
 
 
 def m_date(table_name):
-    '''
-    string: event_date value
-    '''
+    """
+    Compte le nombre de jours uniques dans les données.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f'''
         SELECT
-            COUNT(DISTINCT(event_date)) as event_date
+            COUNT(DISTINCT(event_date)) AS event_date
         FROM 
             {table_name}
         '''
         return query
     except Exception as e:
-        print(f'Error in num_date: {e}')
+        print(f'Error in m_date: {e}')
+        return None
 
 
 def m_users(table_name):
-    '''
-    I/O : Number of users per days
-    '''
+    """
+    Compte le nombre total d'utilisateurs uniques.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f'''
         SELECT
-            COUNT(DISTINCT user_pseudo_id) as num_user
+            COUNT(DISTINCT user_pseudo_id) AS num_user
         FROM
             {table_name}
         '''
@@ -74,139 +102,187 @@ def m_users(table_name):
         print(f'Error in m_users: {e}')
         return None
 
+
 def distinct_event_params_list(table_name):
-    '''
-    I/O : Table => event_params DF
-    '''
+    """
+    Extrait les clés distinctes dans les paramètres d’événement (event_params).
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
         SELECT DISTINCT json_extract(t.key, '$.key') AS key
         FROM {table_name},
         UNNEST({table_name}.event_params) AS t(key, value)
-                """
+        """
         return query
     except Exception as e:
-        print(f'Error in event_params_list: {e}')
+        print(f'Error in distinct_event_params_list: {e}')
         return None
 
+
 def event_and_customdim_list(table_name):
+    """
+    Retourne la fréquence de chaque paramètre par événement.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
         SELECT
-        event_name
-        ,json_extract(t.key, '$.key') AS key
-        ,count(event_name) as event_count
+            event_name,
+            json_extract(t.key, '$.key') AS key,
+            COUNT(event_name) AS event_count
         FROM {table_name},
         UNNEST({table_name}.event_params) AS t(key, value)
         GROUP BY event_name, key
         ORDER BY event_count DESC
-                """
+        """
         return query
     except Exception as e:
-        print(f'Error in event_params_list: {e}')
+        print(f'Error in event_and_customdim_list: {e}')
         return None
 
 
 def event_name_extract(table_name):
-    '''
-        I/O : extract all distinct event_name in the dataSet
-    '''
+    """
+    Extrait les noms d'événements distincts.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
-        SELECT
-            DISTINCT event_name as event_name
-        FROM
-            {table_name}
-            """
+        SELECT DISTINCT event_name AS event_name
+        FROM {table_name}
+        """
         return query
     except Exception as e:
-        print(f'Error in event_name: {e}')
+        print(f'Error in event_name_extract: {e}')
         return None
 
+
 def m_event_name(table_name):
-    '''
-        I/O : extract all distinct event_name in the dataSet
-    '''
+    """
+    Calcule le nombre d’occurrences de chaque événement.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
         SELECT
-            event_name
-            ,count(event_name) as event_count
-        FROM
-            {table_name}
-        GROUP BY 
-            event_name
-        ORDER BY 
-            event_count DESC
-            """
+            event_name,
+            COUNT(event_name) AS event_count
+        FROM {table_name}
+        GROUP BY event_name
+        ORDER BY event_count DESC
+        """
         return query
     except Exception as e:
-        print(f'Error in event_name: {e}')
+        print(f'Error in m_event_name: {e}')
         return None
 
 
 def extract_event_params_unnest(table_name, params_extract):
+    """
+    Extrait les valeurs d'un paramètre spécifique à partir d'event_params.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+        params_extract (str): Le nom du paramètre à extraire (ex. 'page_location').
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f'''
         SELECT
-            event_name
-            ,unnest.key as key
-            ,unnest.value.int_value as int_value
-            ,unnest.value.string_value as str_value
-
+            event_name,
+            unnest.key AS key,
+            unnest.value.int_value AS int_value,
+            unnest.value.string_value AS str_value
         FROM {table_name}, 
         LATERAL UNNEST(event_params)
         WHERE key = '{params_extract}'
         '''
-        # ,unnest.value.double_value as double_value -> TBD
         return query
     except Exception as e:
-        print(f'Error in extract_event_params_unnest : {e}')
+        print(f'Error in extract_event_params_unnest: {e}')
         return None
 
+
 def event_and_customdim_checker(table_name):
+    """
+    Vérifie la présence des dimensions personnalisées pour chaque événement.
+
+    Cette requête compare les événements totaux à ceux ayant une dimension personnalisée.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
-         WITH  custom_dim as (
+        WITH custom_dim AS (
             SELECT
-                event_name
-                ,json_extract(t.key, '$.key') AS key
-                ,count(event_name) as custom_dim_count
-            FROM 
-                {table_name},
+                event_name,
+                json_extract(t.key, '$.key') AS key,
+                COUNT(event_name) AS custom_dim_count
+            FROM {table_name},
             UNNEST({table_name}.event_params) AS t(key, value)
             GROUP BY event_name, key
         ),
-        event as (
+        event AS (
             SELECT
-                event_name
-                ,count(event_name) as total_event_count
-            FROM
-                {table_name}
-            GROUP BY 
-                event_name
+                event_name,
+                COUNT(event_name) AS total_event_count
+            FROM {table_name}
+            GROUP BY event_name
         )
         SELECT
-            cd.event_name
-            ,cd.key
-            ,sum(cd.custom_dim_count) as custom_dim_number
-            ,max(evt.total_event_count) as total_event
-            ,(total_event - custom_dim_number) as delta
-        FROM
-            custom_dim as cd
-        LEFT JOIN event as evt
-        on evt.event_name = cd.event_name
-        GROUP BY 
-            cd.event_name
-            ,cd.key
+            cd.event_name,
+            cd.key,
+            SUM(cd.custom_dim_count) AS custom_dim_number,
+            MAX(evt.total_event_count) AS total_event,
+            (total_event - custom_dim_number) AS delta
+        FROM custom_dim AS cd
+        LEFT JOIN event AS evt ON evt.event_name = cd.event_name
+        GROUP BY cd.event_name, cd.key
         ORDER BY delta DESC
-                """
+        """
         return query
     except Exception as e:
-        print(f'Error in event_params_list: {e}')
+        print(f'Error in event_and_customdim_checker: {e}')
         return None
 
+
 def page_location_extract(table_name):
+    """
+    Extrait les URLs (page_location) présentes dans les paramètres d’événements.
+
+    Args:
+        table_name (str): Le nom de la table GA4.
+
+    Returns:
+        str or None: Requête SQL, ou None en cas d'erreur.
+    """
     try:
         query = f"""
         SELECT DISTINCT
@@ -218,16 +294,5 @@ def page_location_extract(table_name):
         """
         return query
     except Exception as e:
-        print(f'Error in page_location_extract(): {e}')
+        print(f'Error in page_location_extract: {e}')
         return None
-
-
-
-
-'''
-- Vérification du consentement bien en place dans le hit
-- Vérification des duplications
-- Vérification des valeurs null et l'impact possible
-- Vérification du user_pseudo_id disponible à chaque fois
-- Vérification du ga_session_id à chaque fois
-'''

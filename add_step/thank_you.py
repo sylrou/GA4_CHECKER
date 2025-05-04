@@ -1,4 +1,5 @@
 import streamlit as st
+from assets.ui import ui_caption
 
 # 🎉 Petit effet sympa à chaque chargement
 st.balloons()
@@ -43,6 +44,4 @@ st.markdown("""
 Si vous avez des idées, des remarques, ou l’envie de contribuer, n'hésitez pas à me contacter !
 """)
 
-# Footer light
-st.markdown("---")
-st.caption("✨ GA4Checker — un projet open-source, évolutif, et fait avec passion.")
+ui_caption()

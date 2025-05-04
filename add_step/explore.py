@@ -1,24 +1,51 @@
 import streamlit as st
 import duckdb
 import os
+from streamlit_ace import st_ace
 
 from st_pages import add_page_title, get_nav_from_toml
+from services import sql_requests
 
 st.title("🧠 Exploration SQL libre")
 
 db_path = os.path.abspath("../ga4.duckdb")
 
 if os.path.exists(db_path):
-    # Connexion à la base existante en lecture seule
     with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
         con = duckdb.connect(database=db_path, read_only=True)
 
-    # Zone de requête utilisateur
-    query = st.text_area("💬 Écris ta requête SQL ici :", "SELECT * FROM ga4_data LIMIT 10", height=500)
+    # Requêtes prédéfinies
+    st.markdown("### 📋 Requêtes pré-enregistrées")
+    preset_queries = {
+        "Nombre total de sessions": sql_requests.m_sessions("ga4_data"),
+        "Nombre total d'utilisateurs uniques": sql_requests.m_users("ga4_data"),
+        "Nombre de jours uniques dans les données": sql_requests.m_date("ga4_data"),
+        "Nombre d'événement": sql_requests.m_event_name("ga4_data"),
+        "Liste des dates d'événements": sql_requests.d_event_date("ga4_data"),
+        "Liste des custom_dimensions dans event_params": sql_requests.distinct_event_params_list("ga4_data"),
+        "Liste des événements distincts": sql_requests.event_name_extract("ga4_data"),
+        "Liste des urls distinctes (page_location)": sql_requests.page_location_extract("ga4_data")
+    }
+
+    options = ["Aucune requête pré-remplie (écriture libre)"] + list(preset_queries.keys())
+    selected_preset = st.selectbox("Sélectionnez une requête :", options)
+
+    if selected_preset == "Aucune requête pré-remplie (écriture libre)":
+        # Éditeur libre avec coloration
+        query = st_ace(
+            value="SELECT * FROM ga4_data LIMIT 10",
+            language="sql",
+            theme="solarized_dark",
+            height=300,
+            key="sql_editor_free"
+        )
+    else:
+        query = preset_queries[selected_preset]
+        st.code(query, language="sql")
 
     if st.button("▶️ Exécuter la requête"):
         try:
-            with st.spinner("Requête en cours"):
+            with st.spinner("Requête en cours..."):
                 result = con.execute(query).df()
                 st.dataframe(result, use_container_width=True)
         except Exception as e:

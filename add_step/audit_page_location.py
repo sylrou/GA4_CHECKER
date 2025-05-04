@@ -7,6 +7,7 @@ import os
 from services.url_inspector import URLInspector
 from services.query_classifier import *
 from services import sql_requests
+from assets.ui import ui_warning
 
 GA4_DATA = "ga4_data"
 
@@ -15,7 +16,7 @@ st.title("🔍 Analyse - `page_location` du dataset")
 # --- Étape de vérification (compute) : vérifier l'existence de la base de données ---
 db_path = os.path.abspath("../ga4.duckdb")
 if not os.path.exists(db_path):
-    st.error("Aucune base de données trouvée. Veuillez d'abord importer un fichier via la page d'import.")
+    ui_warning()
     st.stop()
 
 # --- Connexion à la base de données (compute) ---

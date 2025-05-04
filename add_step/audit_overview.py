@@ -4,15 +4,15 @@ import pandas as pd
 import os
 
 from services import sql_requests
-
 from services import google_analytics_catalogue as dc
+from assets.ui import ui_warning
 
 st.title("🗺️ Analyse - Vue globale")
 
 # Vérification de la base de données
 db_path = os.path.abspath("../ga4.duckdb")
 if not os.path.exists(db_path):
-    st.error("Aucune base de données trouvée. Veuillez d'abord importer un fichier via la page d'import.")
+    ui_warning()
     st.stop()
 
 # Connexion à la base
