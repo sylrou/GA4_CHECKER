@@ -4,6 +4,7 @@ import os
 import gc
 
 from assets.ui import ui_btn_link
+from services.functions import safe_query_wrapper
 
 dataset_type = 0
 step = 1
@@ -52,7 +53,9 @@ else:
 # --- Création de la base persistante DuckDB ---
 db_path = os.path.abspath("../ga4.duckdb")
 with st.spinner("⏳ Chargement du fichier dans DuckDB..."):
-    con = duckdb.connect(database=db_path, read_only=False)
+    con = safe_query_wrapper(
+                lambda:duckdb.connect(database=db_path, read_only=False)
+    )
     con.execute("INSTALL json; LOAD json;")
 
     con.execute("DROP TABLE IF EXISTS ga4_data;")  # Pour éviter conflits

@@ -9,6 +9,7 @@ from services.url_inspector import URLInspector
 from services.query_classifier import *
 from services import sql_requests
 from assets.ui import ui_warning, ui_caption
+from services.functions import safe_query_wrapper
 
 GA4_DATA = "ga4_data"
 
@@ -22,13 +23,21 @@ if not os.path.exists(db_path):
 
 # --- Connexion à la base de données (compute) ---
 with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
-    con = duckdb.connect(database=db_path, read_only=True)
+    con = safe_query_wrapper(
+        lambda :duckdb.connect(database=db_path, read_only=True),
+        "Erruer lors de la connexion"
+    )
+
 
 # --- Requête SQL (compute) : extraire les valeurs uniques de 'page_location' ---
 st.subheader("Extraction des URLs depuis 'page_location'")
 
 with st.spinner("Requête en cours..."):
-    df_page_location = con.execute(sql_requests.page_location_extract(GA4_DATA)).df()
+    df_page_location = safe_query_wrapper(
+        lambda :con.execute(sql_requests.page_location_extract(GA4_DATA)).df(),
+        "Erreur dans l'extraction du page_location"
+    )
+
 con.close()
 
 # --- Affichage (display) : visualisation des URLs extraites ---

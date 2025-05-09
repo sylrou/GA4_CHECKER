@@ -5,6 +5,7 @@ import pandas as pd
 import os
 
 from services import sql_requests
+from services.functions import safe_query_wrapper
 from assets.ui import ui_warning, ui_caption, ui_sep
 
 GA4_DATA = "ga4_data"
@@ -28,10 +29,14 @@ if not os.path.exists(db_path):
 
 # --- Connexion à la base de données (compute) ---
 with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
-    con = duckdb.connect(database=db_path, read_only=True)
+    con = safe_query_wrapper(
+                lambda:duckdb.connect(database=db_path, read_only=True)
+    )
 
 with st.spinner("Requête en cours..."):
-    df_custom_dimension = con.execute(sql_requests.event_and_customdim_checker(GA4_DATA)).df()
+    df_custom_dimension = safe_query_wrapper(
+                lambda:con.execute(sql_requests.event_and_customdim_checker(GA4_DATA)).df()
+    )
 
 st.markdown("""### Tableau d'exploration - Consultez le delta""")
 # --- Chargement de la table d'exploration
@@ -43,11 +48,13 @@ st.download_button("📥 Télécharger le détail des 'custom dimension'", data=
 
 # --- Chargement de la table calculée (déjà jointe) ---
 with st.spinner("📊 Chargement des custom dimensions..."):
-    df = con.execute(sql_requests.event_and_customdim_checker(GA4_DATA)).df()
-    df["key"] = df["key"].str.replace('"', '', regex=False)
+    df_a = safe_query_wrapper(
+                lambda:con.execute(sql_requests.event_and_customdim_checker(GA4_DATA)).df()
+    )
+    df_a["key"] = df_a["key"].str.replace('"', '', regex=False)
 
 # --- Liste unique des clés disponibles ---
-available_keys = sorted(df["key"].unique())
+available_keys = sorted(df_a["key"].unique())
 
 ui_sep()
 
@@ -56,7 +63,7 @@ st.markdown("""### 🔑 Choisissez la clé du event_params à analyser""")
 selected_key = st.selectbox("Lorem", options=available_keys, label_visibility="hidden")
 
 # --- Filtrage du DataFrame ---
-filtered_df = df[df["key"] == selected_key].copy()
+filtered_df = df_a[df_a["key"] == selected_key].copy()
 
 # --- Affichage des résultats ---
 st.markdown(f"### Résultat pour la clé : `{selected_key}`")

@@ -23,3 +23,5 @@ def ui_caption():
 def ui_sep():
     st.markdown("---")
 
+# ui.py ou assets/ui.py
+

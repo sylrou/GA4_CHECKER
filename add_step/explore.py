@@ -2,6 +2,7 @@ import streamlit as st
 import duckdb
 import os
 from streamlit_ace import st_ace
+from services.functions import  safe_query_wrapper
 
 from st_pages import add_page_title, get_nav_from_toml
 from services import sql_requests
@@ -13,7 +14,9 @@ db_path = os.path.abspath("../ga4.duckdb")
 
 if os.path.exists(db_path):
     with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
-        con = duckdb.connect(database=db_path, read_only=True)
+        con = safe_query_wrapper(
+                lambda:duckdb.connect(database=db_path, read_only=True)
+        )
 
     # Requêtes prédéfinies
     st.markdown("### 📋 Requêtes pré-enregistrées")
@@ -47,7 +50,9 @@ if os.path.exists(db_path):
     if st.button("▶️ Exécuter la requête"):
         try:
             with st.spinner("Requête en cours..."):
-                result = con.execute(query).df()
+                result = safe_query_wrapper(
+                    lambda:con.execute(query).df()
+                )
                 st.dataframe(result, use_container_width=True)
         except Exception as e:
             st.error(f"❌ Erreur dans la requête : {e}")

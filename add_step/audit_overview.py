@@ -9,7 +9,7 @@ from streamlit import columns
 from services import sql_requests
 from services import google_analytics_catalogue as dc
 from assets.ui import ui_warning, ui_caption
-from services.functions import generate_letter_labels
+from services.functions import safe_query_wrapper
 
 st.title("🗺️ Analyse - Vue globale")
 
@@ -22,7 +22,10 @@ if not os.path.exists(db_path):
 # Connexion à la base
 GA4_DATA = "ga4_data"
 with st.spinner("Connexion à DuckDB..."):
-    con = duckdb.connect(database=db_path, read_only=True)
+    con = safe_query_wrapper(
+        lambda :duckdb.connect(database=db_path, read_only=True),
+        "Erreur lors de la connexion"
+    )
 
 
     # -- Construction des colonnes ---
@@ -32,31 +35,41 @@ with st.spinner("Connexion à DuckDB..."):
     with users_col:
         st.subheader("👤 Nombre d'utilisateurs")
         with st.spinner("Requête en cours..."):
-            df_user = con.execute(sql_requests.m_users(GA4_DATA)).fetchone()[0]
-            st.metric("Utilisateurs uniques", df_user if df_user else 0, help="Basé sur user_pseudo_id", border=True)
+            total_user = safe_query_wrapper(
+                lambda: con.execute(sql_requests.m_users(GA4_DATA)).fetchone()[0]
+            )
+            st.metric("Utilisateurs uniques", total_user if total_user else 0, help="Basé sur user_pseudo_id", border=True)
 
     # --- Sessions ---
     with sessions_col:
         st.subheader("📊 Nombre de sessions")
         with st.spinner("Requête en cours..."):
-            df_session = con.execute(sql_requests.m_sessions(GA4_DATA)).fetchone()[0]
-            st.metric("Sessions uniques", df_session if df_session else 0, help="Basé sur session_id", border=True)
+            total_session = safe_query_wrapper(
+                lambda:con.execute(sql_requests.m_sessions(GA4_DATA)).fetchone()[0]
+            )
+            st.metric("Sessions uniques", total_session if total_session else 0, help="Basé sur session_id", border=True)
 
     # --- Dates ---
     with date_col:
         st.subheader("📅 Période couverte")
         with st.spinner("Requête en cours..."):
-            df_date = con.execute(sql_requests.m_date(GA4_DATA)).fetchone()
-            df_event_date = con.execute(sql_requests.d_event_date(GA4_DATA)).fetchdf()
-            st.metric("Nombre de dates différentes", df_date[0], border=True)
+            total_date = safe_query_wrapper(
+                lambda:con.execute(sql_requests.m_date(GA4_DATA)).fetchone()
+            )
+            df_event_date = safe_query_wrapper(
+                lambda:con.execute(sql_requests.d_event_date(GA4_DATA)).fetchdf()
+            )
+            st.metric("Nombre de dates différentes", total_date[0], border=True)
             st.info(f"Période du {min(df_event_date['event_date'])} au {max(df_event_date['event_date'])}")
+
 
 
     # --- Noms des événements ---
     st.subheader("🎯 Noms d'événements détectés")
     with st.spinner("Requête en cours..."):
-        df_event_name = con.execute(sql_requests.m_event_name(GA4_DATA)).fetchdf()
-
+        df_event_name = safe_query_wrapper(
+                lambda:con.execute(sql_requests.m_event_name(GA4_DATA)).fetchdf()
+        )
     event_col1, event_col2, event_col3 = st.columns(3)
     with event_col1:
         st.metric("Nombre d'événements différents", len(df_event_name), border=True)
@@ -119,7 +132,9 @@ with st.spinner("Connexion à DuckDB..."):
     # --- Liste des event_params ---
     st.subheader("🧾 Liste des 'Dimensions personnalisées' distinctes")
     with st.spinner("Requête en cours..."):
-        df_event_params = con.execute(sql_requests.distinct_event_params_list(GA4_DATA)).fetchdf()
+        df_event_params = safe_query_wrapper(
+                lambda:con.execute(sql_requests.distinct_event_params_list(GA4_DATA)).fetchdf()
+        )
         #Préparation de la liste pour mcol1 (metric colonnes 1)
         key_event_params_list = sorted([k.replace('"', '') for k in df_event_params['key']])
         # Préparation de la liste pour mcol1 (metric colonnes 2)
