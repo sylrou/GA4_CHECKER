@@ -207,3 +207,33 @@ GA4_MANDATORY_DIMENSION_IN_RECOMMENDED_EVENT = {
                 }
     }
 }
+
+event_params_dict = {
+    'batch_ordering_id': 'standard',
+    'batch_page_id': 'standard',
+    'campaign': 'standard',
+    'click_text': 'standard',
+    'click_url': 'standard',
+    'debug_mode': 'standard',
+    'engaged_session_event': 'standard',
+    'engagement_time_msec': 'standard',
+    'entrances': 'standard',
+    'ga_session_id': 'standard',
+    'ga_session_number': 'standard',
+    'ignore_referrer': 'standard',
+    'link_classes': 'standard',
+    'link_domain': 'standard',
+    'link_id': 'standard',
+    'link_url': 'standard',
+    'medium': 'standard',
+    'outbound': 'standard',
+    'page_location': 'standard',
+    'page_path': 'standard',
+    'page_referrer': 'standard',
+    'page_title': 'standard',
+    'page_url': 'standard',
+    'percent_scrolled': 'standard',
+    'session_engaged': 'standard',
+    'source': 'standard',
+    'term': 'standard'
+}

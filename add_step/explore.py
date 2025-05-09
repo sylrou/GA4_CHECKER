@@ -5,6 +5,7 @@ from streamlit_ace import st_ace
 
 from st_pages import add_page_title, get_nav_from_toml
 from services import sql_requests
+from assets.ui import ui_caption
 
 st.title("🧠 Exploration SQL libre")
 
@@ -54,3 +55,16 @@ if os.path.exists(db_path):
     con.close()
 else:
     st.warning("⚠️ Aucune base trouvée. Va sur la page d'import pour charger un fichier GA4.")
+
+st.markdown("---")
+st.subheader("💡 Proposer votre requête pour l'ajouter en feature dans l'app !")
+st.markdown(
+    """
+    Utilisez le formulaire pour proposer une **feature**,une **requête**, suggérer une **amélioration UX**, ou signaler un **bug** :
+    """
+)
+st.link_button("📝 Remplir le formulaire Google", "https://docs.google.com/forms/d/e/1FAIpQLSflgaNI4c_SjCECVzIM78DQuqd-UmyuNyHSFbDZ99YGe58pbQ/viewform?usp=header")
+
+ui_caption()
+
+

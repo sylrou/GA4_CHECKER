@@ -14,6 +14,30 @@ a {
 a:hover {
     text-decoration: underline;
 }
+#talkbubble {
+  width: 140px;
+  height: auto;
+  background: white;
+  color: #070D0C;
+  padding: 10px;
+  font-size: 14px;
+  font-family: sans-serif;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#talkbubble:before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 26px;
+  width: 0;
+  height: 0;
+  border-top: 13px solid transparent;
+  border-right: 26px solid #4C7364; /* vert logo */
+  border-bottom: 13px solid transparent;
+}
 
 
 /*

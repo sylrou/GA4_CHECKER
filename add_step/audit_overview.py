@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import string
 import altair as alt
+from streamlit import columns
 
 from services import sql_requests
 from services import google_analytics_catalogue as dc
@@ -119,9 +120,26 @@ with st.spinner("Connexion à DuckDB..."):
     st.subheader("🧾 Liste des 'Dimensions personnalisées' distinctes")
     with st.spinner("Requête en cours..."):
         df_event_params = con.execute(sql_requests.distinct_event_params_list(GA4_DATA)).fetchdf()
+        #Préparation de la liste pour mcol1 (metric colonnes 1)
         key_event_params_list = sorted([k.replace('"', '') for k in df_event_params['key']])
-        st.metric("Paramètres distincts", len(key_event_params_list), border=True)
-        st.data_editor(pd.DataFrame(key_event_params_list, columns=["event_param"]), use_container_width=True)
+        # Préparation de la liste pour mcol1 (metric colonnes 2)
+        count_standard = 0
+        extract_standard = [k for k in dc.event_params_dict.keys()]
+        for x in key_event_params_list:
+            if x in extract_standard:
+                count_standard += 1
+
+        # Gestion de l'affichage des colonnes
+        mcol1, mcol2, mcol3 = columns(3)
+        with mcol1:
+            st.metric("Nombre total de paramètres dans event_params", len(key_event_params_list), border=True)
+        with mcol2:
+            st.metric("Nombre total de paramètres classiques", int(count_standard), border=True)
+        with mcol3:
+            st.metric("Nombre total de paramètres personnalisés", len(key_event_params_list) - count_standard, border=True)
+        # Gestion de l'affichage de la liste des event_params
+        with st.expander("💡 Affichez la liste des paramètres d'événements disponibles dans le Dateset :"):
+            st.data_editor(pd.DataFrame(key_event_params_list, columns=["event_param"]), use_container_width=True)
         st.download_button("📥 Télécharger les event_params", data=pd.DataFrame(key_event_params_list).to_csv(index=False), file_name="ga4_event_params.csv")
 
     con.close()
