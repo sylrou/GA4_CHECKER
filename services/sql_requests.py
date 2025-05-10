@@ -244,7 +244,7 @@ def event_and_customdim_checker(table_name):
             SELECT
                 event_name,
                 json_extract(t.key, '$.key') AS key,
-                COUNT(event_name) AS custom_dim_count
+                COUNT(*) AS custom_dim_count
             FROM {table_name},
             UNNEST({table_name}.event_params) AS t(key, value)
             GROUP BY event_name, key
@@ -252,7 +252,7 @@ def event_and_customdim_checker(table_name):
         event AS (
             SELECT
                 event_name,
-                COUNT(event_name) AS total_event_count
+                COUNT(*) AS total_event_count
             FROM {table_name}
             GROUP BY event_name
         )
@@ -261,11 +261,16 @@ def event_and_customdim_checker(table_name):
             cd.key,
             SUM(cd.custom_dim_count) AS custom_dim_number,
             MAX(evt.total_event_count) AS total_event,
-            (total_event - custom_dim_number) AS delta
+            MAX(evt.total_event_count) - SUM(cd.custom_dim_count) AS delta,
+            CASE 
+                WHEN MAX(evt.total_event_count) != 0 THEN 
+                    ROUND((1 - SUM(cd.custom_dim_count) * 1.0 / MAX(evt.total_event_count)) * 100, 2)
+                ELSE NULL
+            END AS missing_percent
         FROM custom_dim AS cd
         LEFT JOIN event AS evt ON evt.event_name = cd.event_name
         GROUP BY cd.event_name, cd.key
-        ORDER BY delta DESC
+        ORDER BY missing_percent DESC
         """
         return query
     except Exception as e:

@@ -3,13 +3,30 @@ import streamlit as st
 import os
 import gc
 
-from assets.ui import ui_btn_link
+from streamlit import columns
+
+from assets.ui import ui_btn_link, ui_audit_netlinkink
 from services.functions import safe_query_wrapper
 
 dataset_type = 0
 step = 1
 
 st.header("📥 Importer les données GA4")
+
+db_path = os.path.abspath("../ga4.duckdb")
+
+# --- Vérification de la base existante ---
+if os.path.exists(db_path):
+    st.success("✅ Une base DuckDB existe déjà.")
+    ui_audit_netlinkink()
+
+    st.markdown('Changez le dataset en utilisant le bouton suivant :')
+    if st.button("🧨 Réinitialiser et importer une nouvelle donnée"):
+        os.remove(db_path)
+        st.success("✅ La base précédente a été supprimée. Veuillez importer une nouvelle donnée.")
+        st.rerun()
+    else:
+        st.stop()
 
 st.markdown("""
     Vous pouvez utiliser et importer votre propre donnée, mais si vous n'avez pas de fichier sous la main,  
@@ -51,7 +68,6 @@ else:
         step += 1
 
 # --- Création de la base persistante DuckDB ---
-db_path = os.path.abspath("../ga4.duckdb")
 with st.spinner("⏳ Chargement du fichier dans DuckDB..."):
     con = safe_query_wrapper(
                 lambda:duckdb.connect(database=db_path, read_only=False)
@@ -70,7 +86,7 @@ with st.spinner("⏳ Chargement du fichier dans DuckDB..."):
     step += 1
 
     # Affiche les infos de la table chargé (pour les debugs)
-    with st.expander("💡 Affichez le schéma de votre import :"):
+    with st.expander("📊 Affichez le schéma de votre import :"):
         st.dataframe(con.sql("PRAGMA table_info(ga4_data)").df())
 
     con.close()
@@ -94,5 +110,4 @@ if dataset_type == 3:
     step += 1
 
 st.success("🎉 Données importées avec succès. Vous êtes prêt pour l’analyse !")
-st.markdown('### Vous pouvez maintenant vous dirigez vers :')
-ui_btn_link("add_step/audit_overview.py", "Analyse - Vue globale")
+ui_audit_netlinkink()

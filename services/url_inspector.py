@@ -22,6 +22,10 @@ class URLInspector:
         x_list = [k for k, v in Counter(keys).items() if v > 1]
         return x_list
 
+    def get_duplicate_params_count(self):
+        dup_keys = self.get_duplicate_params()
+        return len(dup_keys)
+
     def get_param_keys(self):
         return [k for k, _ in self.query_params]
 
@@ -49,6 +53,7 @@ class URLInspector:
             "param_count": len(self.query_params),
             "param_keys": self.get_param_keys(),
             "dup_params": self.get_duplicate_params(),
+            "dup_params_count": self.get_duplicate_params_count(),
             "fragment": self.get_fragment(),
             "has_fragment": self.has_fragment(),
             "url_too_long": self.url_len()
