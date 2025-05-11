@@ -75,7 +75,6 @@ else:
             st.info(f"Etape {step} : Fichier JSON uploadé avec succès ✅")
             step += 1
         else:
-            st.warning("Veuillez importer une donnée ou activer une option pour continuer.")
             st.stop()
 
 # --- Étape 2 : Création de la base temporaire ---

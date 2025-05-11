@@ -31,6 +31,37 @@ Vous pouvez maintenant utiliser les rapports dans la section analyses ou l'outil
 ui_sep()
 
 # --- Mise à jour du mois en cours ---
+
+st.badge("Nouvelle mise à jour du 11/05/2025")
+st.markdown("""
+🎉 **Long week-end productif pour GA4Checker** : plusieurs améliorations clés ont été apportées à l’outil pour le rendre plus fiable, plus pédagogique et plus simple à utiliser.
+
+### 🧪 Nouveau jeu de données de démonstration
+- Mise à jour du dataset de démonstration avec des cas d’usage:
+    - Duplication de paramètres d’URL
+    - URLs trop longues
+    - Présence de paramètres critiques (`token`, `id utilisateur`, etc.)
+    - et bien plus encore…
+- Permet à l’utilisateur de **tester l’application sans importer sa propre donnée**.
+
+### 🔍 Analyse avancée des `event_params`
+- Ajout d’un **pourcentage de données manquantes** pour identifier les erreurs d’implémentation.
+- Interface retravaillée pour plus de lisibilité et une meilleure interprétation des résultats.
+
+### 🕵️ Interface enrichie avec le "mode détective"
+- Les messages clés apparaissent désormais sous forme de **bulles “détective”** (emoji + conseil contextuel).
+- Présent dans toute l’application (dates obsolètes, taux de complétion bas, etc.).
+
+### ⚙️ Refonte complète de la page d’import
+- Réinitialisation automatique de la base DuckDB possible à tout moment.
+- Flux d’import repensé pour **éviter les erreurs de session**.
+- Interface simplifiée avec des messages adaptés à chaque étape.
+
+➡️ Testez ces nouveautés dès maintenant dans les sections **📂 Importer votre fichier** ou **Analyse des `event_params`** !
+""")
+ui_btn_link("add_step/data_import.py", "Importer votre fichier")
+ui_sep()
+
 st.markdown("""
 ## Mise à jour du mois de mai
 """)
@@ -65,7 +96,6 @@ Cette nouvelle section permet :
 """)
 
 ui_btn_link("add_step/explore.py", "Exploration libre")
-
 ui_sep()
 
 # --- Mise à jour du mois en cours ---
@@ -100,8 +130,8 @@ Ce module vous permet de détecter rapidement :
 """)
 
 ui_btn_link("add_step/audit_event_params.py","Analyse - event_params")
+ui_sep()
 
-# --- Mise à jour du mois en cours ---
 st.badge("Nouveau : 02/05/2025")
 st.markdown("""
 L'application évolue pour offrir une expérience plus fluide et intuitive :
@@ -114,6 +144,8 @@ L'application évolue pour offrir une expérience plus fluide et intuitive :
 
 Merci d'avance pour vos retours 🙌
 """)
+
+ui_sep()
 
 st.markdown("""
     ## Mises à jour des mois précédents
