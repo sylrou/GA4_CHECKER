@@ -6,13 +6,14 @@ from services.functions import  safe_query_wrapper
 
 from st_pages import add_page_title, get_nav_from_toml
 from services import sql_requests
-from services.functions import launch
+from services.functions import get_ga4_connection_or_stop
 from assets.ui import ui_caption
 
 st.title("🧠 Exploration SQL libre")
 
-# --- Connexion à la base de données (compute) : vérifie existence et connecte ---
-con = launch()
+# --- Connexion à la base de données (compute) ---
+with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+    con = get_ga4_connection_or_stop()
 
 # Requêtes prédéfinies
 st.markdown("### 📋 Requêtes pré-enregistrées")

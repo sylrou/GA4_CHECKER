@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 from services import sql_requests
-from services.functions import safe_query_wrapper
+from services.functions import safe_query_wrapper, get_ga4_connection_or_stop
 from assets.ui import ui_warning, ui_caption, ui_sep
 
 GA4_DATA = "ga4_data"
@@ -21,17 +21,10 @@ alors le nombre d'événements page_view devrait être égal au nombre d'occurre
 ➡️ Le delta (écart) permet d’identifier s’il y a un problème. Un delta important peut révéler une anomalie.
 """)
 
-# --- Étape de vérification (compute) : vérifier l'existence de la base de données ---
-db_path = os.path.abspath("../ga4.duckdb")
-if not os.path.exists(db_path):
-    ui_warning()
-    st.stop()
 
 # --- Connexion à la base de données (compute) ---
 with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
-    con = safe_query_wrapper(
-                lambda:duckdb.connect(database=db_path, read_only=True)
-    )
+    con = get_ga4_connection_or_stop()
 
 with st.spinner("Requête en cours..."):
     df_custom_dimension = safe_query_wrapper(

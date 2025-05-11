@@ -9,15 +9,16 @@ from services.url_inspector import URLInspector
 from services.query_classifier import *
 from services import sql_requests
 from assets.ui import ui_warning, ui_caption, ui_sep, ui_detective_tip
-from services.functions import safe_query_wrapper, launch
+from services.functions import safe_query_wrapper, get_ga4_connection_or_stop
 
 GA4_DATA = "ga4_data"
 detective_bubble = []
 
 st.title("🔍 Analyse - `page_location` du dataset")
 
-# --- Connexion à la base de données (compute) : vérifie existence et connecte ---
-con = launch()
+# --- Connexion à la base de données (compute) ---
+with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+    con = get_ga4_connection_or_stop()
 
 # --- Requête SQL (compute) : extraire les valeurs uniques de 'page_location' ---
 st.subheader("Extraction des URLs depuis 'page_location'")

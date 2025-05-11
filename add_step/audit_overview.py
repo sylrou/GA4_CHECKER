@@ -9,15 +9,16 @@ from streamlit import columns
 from services import sql_requests
 from services import google_analytics_catalogue as dc
 from assets.ui import ui_warning, ui_caption, ui_sep, ui_detective_tip
-from services.functions import safe_query_wrapper, launch
+from services.functions import safe_query_wrapper, get_ga4_connection_or_stop
 
 GA4_DATA = "ga4_data"
 detective_bubble = []
 
 st.title("🗺️ Analyse - Vue globale")
 
-# --- Connexion à la base de données (compute) : vérifie existence et connecte ---
-con = launch()
+# --- Connexion à la base de données (compute) ---
+with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
+    con = get_ga4_connection_or_stop()
 
 
 # --- Construction des colonnes ---

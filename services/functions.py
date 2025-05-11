@@ -1,5 +1,6 @@
 import string
 import streamlit as st
+import duckdb
 
 from services import sql_requests
 from assets.ui import ui_warning
@@ -48,24 +49,31 @@ import streamlit as st
 from services.functions import safe_query_wrapper
 from assets.ui import ui_warning
 
-def launch():
+def get_ga4_connection_or_stop(table_name: str = "ga4_data"):
     """
-    Initialise la connexion à la base DuckDB si elle existe.
+    Vérifie si la base GA4 est prête dans la session et retourne une connexion DuckDB.
+    Sinon, arrête l'exécution avec un message d'avertissement.
 
-    Returns:
-        duckdb.DuckDBPyConnection: Connexion à la base DuckDB en lecture seule.
+    Parameters
+    ----------
+    table_name : str
+        Nom attendu de la table GA4 dans la base.
 
-    Raises:
-        streamlit.StopException: Arrête l'exécution si la base n'existe pas ou échoue à se connecter.
+    Returns
+    -------
+    duckdb.DuckDBPyConnection
     """
-    db_path = os.path.abspath("../ga4.duckdb")
+    if "db_path" not in st.session_state or not st.session_state.get("ga4_ready"):
+        st.warning("❌ Aucune base de données disponible. Veuillez d'abord importer vos données.")
+        st.stop()
 
-    with st.spinner("🔌 Connexion à la base DuckDB en cours..."):
-        if not os.path.exists(db_path):
-            ui_warning()
-            st.stop()
+    db_path = st.session_state.db_path
+    con = duckdb.connect(database=db_path, read_only=False)
 
-        return safe_query_wrapper(
-            lambda: duckdb.connect(database=db_path, read_only=True),
-            "❌ Erreur lors de la connexion à la base DuckDB."
-        )
+    # Vérifie que la table attendue existe
+    tables = [row[0] for row in con.execute("SHOW TABLES").fetchall()]
+    if table_name not in tables:
+        st.error(f"⚠️ La table `{table_name}` est introuvable dans la base.")
+        st.stop()
+
+    return con
