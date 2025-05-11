@@ -1,12 +1,12 @@
 import streamlit as st
 import duckdb
 import os
-from streamlit_ace import st_ace
-from services.functions import  safe_query_wrapper
 
-from st_pages import add_page_title, get_nav_from_toml
+from streamlit_ace import st_ace
+
+from services.functions import  safe_query_wrapper, get_ga4_connection_or_stop
 from services import sql_requests
-from services.functions import get_ga4_connection_or_stop
+
 from assets.ui import ui_caption
 
 st.title("🧠 Exploration SQL libre")
@@ -22,6 +22,7 @@ preset_queries = {
     "Nombre total d'utilisateurs uniques": sql_requests.m_users("ga4_data"),
     "Nombre de jours uniques dans les données": sql_requests.m_date("ga4_data"),
     "Nombre d'événement": sql_requests.m_event_name("ga4_data"),
+    "Nombre d'utilisateur par source, medium et campagne": sql_requests.source_medium_campaign_by_user("ga4_data"),
     "Liste des dates d'événements": sql_requests.d_event_date("ga4_data"),
     "Liste des custom_dimensions dans event_params": sql_requests.distinct_event_params_list("ga4_data"),
     "Liste des événements distincts": sql_requests.event_name_extract("ga4_data"),

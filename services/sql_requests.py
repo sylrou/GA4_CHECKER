@@ -33,7 +33,6 @@ def m_sessions(table_name):
         print(f'Error in m_sessions: {e}')
         return None
 
-
 def d_event_date(table_name):
     """
     Extrait toutes les dates d'événements distinctes.
@@ -55,7 +54,6 @@ def d_event_date(table_name):
     except Exception as e:
         print(f'Error in d_event_date: {e}')
         return None
-
 
 def m_date(table_name):
     """
@@ -79,7 +77,6 @@ def m_date(table_name):
         print(f'Error in m_date: {e}')
         return None
 
-
 def m_users(table_name):
     """
     Compte le nombre total d'utilisateurs uniques.
@@ -102,7 +99,6 @@ def m_users(table_name):
         print(f'Error in m_users: {e}')
         return None
 
-
 def distinct_event_params_list(table_name):
     """
     Extrait les clés distinctes dans les paramètres d’événement (event_params).
@@ -123,7 +119,6 @@ def distinct_event_params_list(table_name):
     except Exception as e:
         print(f'Error in distinct_event_params_list: {e}')
         return None
-
 
 def event_and_customdim_list(table_name):
     """
@@ -151,7 +146,6 @@ def event_and_customdim_list(table_name):
         print(f'Error in event_and_customdim_list: {e}')
         return None
 
-
 def event_name_extract(table_name):
     """
     Extrait les noms d'événements distincts.
@@ -171,7 +165,6 @@ def event_name_extract(table_name):
     except Exception as e:
         print(f'Error in event_name_extract: {e}')
         return None
-
 
 def m_event_name(table_name):
     """
@@ -196,7 +189,6 @@ def m_event_name(table_name):
     except Exception as e:
         print(f'Error in m_event_name: {e}')
         return None
-
 
 def extract_event_params_unnest(table_name, params_extract):
     """
@@ -224,7 +216,6 @@ def extract_event_params_unnest(table_name, params_extract):
     except Exception as e:
         print(f'Error in extract_event_params_unnest: {e}')
         return None
-
 
 def event_and_customdim_checker(table_name):
     """
@@ -277,7 +268,6 @@ def event_and_customdim_checker(table_name):
         print(f'Error in event_and_customdim_checker: {e}')
         return None
 
-
 def page_location_extract(table_name):
     """
     Extrait les URLs (page_location) présentes dans les paramètres d’événements.
@@ -301,3 +291,46 @@ def page_location_extract(table_name):
     except Exception as e:
         print(f'Error in page_location_extract: {e}')
         return None
+
+def source_medium_campaign_by_user(table_name):
+    """
+    Génère une requête SQL pour compter les utilisateurs distincts selon la source, le medium et la campagne.
+
+    Cette fonction construit une requête SQL à exécuter sur une table d'export GA4 (par exemple chargée dans DuckDB),
+    permettant de récupérer le nombre d'utilisateurs uniques (`user_pseudo_id`) pour chaque combinaison :
+    - `traffic_source.source`
+    - `traffic_source.medium`
+    - `traffic_source.name` (renommée en campagne)
+
+    Le résultat est trié par nombre d'utilisateurs décroissant.
+
+    Args:
+        table_name (str): Le nom de la table à interroger (non utilisé ici, la table est en dur : 'ga4_data').
+
+    Returns:
+        str: La chaîne contenant la requête SQL.
+
+    Raises:
+        Exception: En cas d'erreur lors de la génération de la requête.
+    """
+    try:
+        query = f"""
+        SELECT
+          traffic_source.source AS source,
+          traffic_source.medium AS medium,
+          traffic_source.name AS campaign,
+          COUNT(DISTINCT user_pseudo_id) AS users
+        FROM {table_name}
+        GROUP BY
+          traffic_source.source,
+          traffic_source.medium,
+          traffic_source.name
+        ORDER BY
+          users DESC
+        """
+        return query
+    except Exception as e:
+        print(f'Erreur dans source_medium_campaign_by_user : {e}')
+        return None
+
+
