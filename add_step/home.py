@@ -17,47 +17,52 @@ st.markdown("""
 Rendez-vous dans l’onglet **📂 Importer votre fichier** pour :
 - utiliser le **jeu de démonstration**, ou
 - **importer vos propres données GA4** exportées depuis BigQuery.
+""")
 
+st.markdown("""
 ## Comment importer votre propre jeu de données ?
+""")
 
-1. Dans **BigQuery**, effectuez la requête suivante (en filtrant si besoin pour rester sous **1 Go**).
-""")
-st.code(
-        """
-    SELECT * FROM `votre-projet.analytics_123456.events_YYYYMMDD`
-    """,
-        language="sql"
-)
-st.image('assets/how_to_import_0.png')
-st.markdown("""
-2. Cliquez sur **"Enregistrer les résultats"**, puis choisissez :
-   - **Destination** : Google Drive
-   - **Format** : **JSONL (JSON délimité par un retour à la ligne)**
-   (Voir capture)
-""")
-st.image('assets/how_to_import_1.png')
-st.warning("""⚠️ Attention : importer un fichier JSON classique au lieu du format JSONL provoquera une erreur.""")
-st.markdown("""
-    - Vous allez voir le message suivant de la part de BigQuery :
-""")
-st.image('assets/how_to_import_2.png')
-st.markdown("""
-    - Attendez de voir le message suivant et cliquez sur le lien pour accéder à la sauvegarde dans votre drive
-""")
-st.image('assets/how_to_import_3.png')
-st.markdown("""
-3. Téléchargez votre fichier JSON qui commence par 'bq-results...'
-""")
-st.image('assets/how_to_import_4.png')
-st.markdown("""
-4. Importez ce fichier dans **GA4Checker** via l'interface.
-""")
-st.warning("⚠️ Attention : importer un fichier JSON classique au lieu du format JSONL provoquera une erreur.")
-st.markdown("""
-Une fois le fichier importé :
-- Consultez les **rapports d’audit** générés automatiquement
-- Ou utilisez l’outil d’**exploration libre** pour analyser vos données comme vous le souhaitez.
-""")
+with st.expander("ℹ️ Vous pouvez **consulter la documentation complète** en déroulant le bloc ci-dessous 👇"):
+    st.markdown("""
+    1. Dans **BigQuery**, effectuez la requête suivante (en filtrant si besoin pour rester sous **1 Go**).
+    """)
+    st.code(
+            """
+        SELECT * FROM `votre-projet.analytics_123456.events_YYYYMMDD`
+        """,
+            language="sql"
+    )
+    st.image('assets/how_to_import_0.png')
+    st.markdown("""
+    2. Cliquez sur **"Enregistrer les résultats"**, puis choisissez :
+       - **Destination** : Google Drive
+       - **Format** : **JSONL (JSON délimité par un retour à la ligne)**
+       (Voir capture)
+    """)
+    st.image('assets/how_to_import_1.png')
+    st.warning("""⚠️ Attention : importer un fichier JSON classique au lieu du format JSONL provoquera une erreur.""")
+    st.markdown("""
+        - Vous allez voir le message suivant de la part de BigQuery :
+    """)
+    st.image('assets/how_to_import_2.png')
+    st.markdown("""
+        - Attendez de voir le message suivant et cliquez sur le lien pour accéder à la sauvegarde dans votre drive
+    """)
+    st.image('assets/how_to_import_3.png')
+    st.markdown("""
+    3. Téléchargez votre fichier JSON qui commence par 'bq-results...'
+    """)
+    st.image('assets/how_to_import_4.png')
+    st.markdown("""
+    4. Importez ce fichier dans **GA4Checker** via l'interface.
+    """)
+    st.warning("⚠️ Attention : importer un fichier JSON classique au lieu du format JSONL provoquera une erreur.")
+    st.markdown("""
+    Une fois le fichier importé :
+    - Consultez les **rapports d’audit** générés automatiquement
+    - Ou utilisez l’outil d’**exploration libre** pour analyser vos données comme vous le souhaitez.
+    """)
 
 ui_sep()
 
@@ -66,39 +71,77 @@ st.markdown("""
 ## Dernière mise à jour
 """)
 
-st.badge("📂 Nouvelle mise à jour du 11/05/2025")
+st.badge("📂 Nouvelle mise à jour du 25/05/2025 - Refonte des filtres et de la documentation")
 st.markdown("""
-🎉 **Long week-end productif pour GA4Checker** : plusieurs améliorations clés ont été apportées à l’outil pour le rendre plus fiable, plus pédagogique et plus simple à utiliser.
+Une **mise à jour majeure** a été déployée sur la section `event_params` pour offrir une interface plus intuitive et pédagogique.
 
-### Nouveau jeu de données de démonstration
-- Mise à jour du dataset de démonstration avec des cas d’usage:
-    - Duplication de paramètres d’URL
-    - URLs trop longues
-    - Présence de paramètres critiques (`token`, `id utilisateur`, etc.)
-    - et bien plus encore…
-- Permet à l’utilisateur de **tester l’application sans importer sa propre donnée**.
+### 📝 Documentation mise à jour (page d’accueil)
+- Refonte complète de la section **"Comment importer vos propres données"**
+- Intégration de **captures d’écran étape par étape**
+- Explication claire sur les **formats JSONL vs JSON classique**
+- Ajout d’un bandeau de mise en garde pour éviter les erreurs fréquentes d’import
 
-### Analyse avancée des `event_params`
-- Ajout d’un **pourcentage de données manquantes** pour identifier les erreurs d’implémentation.
-- Interface retravaillée pour plus de lisibilité et une meilleure interprétation des résultats.
+### ✅ Nouveaux filtres intelligents
+- Disposition des filtres `event_name` et `event_params.key` en **deux colonnes**.
+- Ajout de **cases "Tout sélectionner"** pour chaque filtre.
+- Possibilité de **réinitialiser la sélection par défaut** sans recharger la page.
+- Comportement amélioré : plus aucun écrasement de sélection lors des interactions manuelles.
 
-### Interface enrichie avec le "mode détective"
-- Les messages clés apparaissent désormais sous forme de **bulles “détective”** (emoji + conseil contextuel).
-- Présent dans toute l’application (dates obsolètes, taux de complétion bas, etc.).
+### 🧠 Sélection par défaut optimisée
+- Certaines dimensions considérées comme techniques ou peu utiles (`campaign`, `source`, etc.) sont exclues par défaut.
+- L'utilisateur peut les sélectionner librement si nécessaire.
 
-### Refonte complète de la page d’import
-- Réinitialisation automatique de la base DuckDB possible à tout moment.
-- Flux d’import repensé pour **éviter les erreurs de session**.
-- Interface simplifiée avec des messages adaptés à chaque étape.
+### 📊 Visualisation renforcée
+- Le graphique s’adapte automatiquement au **nombre de combinaisons `event_name × key`**.
+- L’affichage vertical permet de conserver la lisibilité même avec de nombreux événements.
+- Barres empilées :
+    - 🟩 Vert : dimension présente
+    - 🟥 Rouge : dimension absente (delta)
 
-➡️ Testez ces nouveautés dès maintenant dans les sections **📂 Importer votre fichier** ou **Analyse des `event_params`** !
+### 🔎 Focus sur les erreurs
+- Ajout d’un **filtre "delta > 0"** pour afficher uniquement les problèmes potentiels.
+
+➡️ Ces nouveautés sont disponibles dans les onglets :
+- **Analyse des `event_params`**
+- **📂 Importer votre fichier**
 """)
-ui_btn_link("add_step/data_import.py", "Importer votre fichier")
+ui_btn_link("add_step/audit_event_params.py", "Analyse - event_params")
+
+
 
 ui_sep()
 
 # --- Mises à jour précédentes ---
 st.markdown("""## Mises à jour précédentes""")
+
+with st.expander("📂 Mise à jour du 11/05/2025 - Amélioration de l'exploration SQL libre"):
+    st.markdown("""
+    🎉 **Long week-end productif pour GA4Checker** : plusieurs améliorations clés ont été apportées à l’outil pour le rendre plus fiable, plus pédagogique et plus simple à utiliser.
+    
+    ### Nouveau jeu de données de démonstration
+    - Mise à jour du dataset de démonstration avec des cas d’usage:
+        - Duplication de paramètres d’URL
+        - URLs trop longues
+        - Présence de paramètres critiques (`token`, `id utilisateur`, etc.)
+        - et bien plus encore…
+    - Permet à l’utilisateur de **tester l’application sans importer sa propre donnée**.
+    
+    ### Analyse avancée des `event_params`
+    - Ajout d’un **pourcentage de données manquantes** pour identifier les erreurs d’implémentation.
+    - Interface retravaillée pour plus de lisibilité et une meilleure interprétation des résultats.
+    
+    ### Interface enrichie avec le "mode détective"
+    - Les messages clés apparaissent désormais sous forme de **bulles “détective”** (emoji + conseil contextuel).
+    - Présent dans toute l’application (dates obsolètes, taux de complétion bas, etc.).
+    
+    ### Refonte complète de la page d’import
+    - Réinitialisation automatique de la base DuckDB possible à tout moment.
+    - Flux d’import repensé pour **éviter les erreurs de session**.
+    - Interface simplifiée avec des messages adaptés à chaque étape.
+    
+    ➡️ Testez ces nouveautés dès maintenant dans les sections **📂 Importer votre fichier** ou **Analyse des `event_params`** !
+    """)
+    ui_btn_link("add_step/data_import.py", "Importer votre fichier")
 
 with st.expander("📂 Mise à jour du 04/05/2025 - Amélioration de l'exploration SQL libre"):
     st.markdown("""
