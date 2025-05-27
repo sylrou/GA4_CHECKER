@@ -25,7 +25,7 @@ st.markdown("""
 
 with st.expander("ℹ️ Vous pouvez **consulter la documentation complète** en déroulant le bloc ci-dessous 👇"):
     st.markdown("""
-    1. Dans **BigQuery**, effectuez la requête suivante (en filtrant si besoin pour rester sous **1 Go**).
+    1. Dans **BigQuery**, effectuez la requête suivante (en filtrant si besoin pour rester sous **400 Mo de requête**).
     """)
     st.code(
             """
@@ -55,7 +55,7 @@ with st.expander("ℹ️ Vous pouvez **consulter la documentation complète** en
     """)
     st.image('assets/how_to_import_4.png')
     st.markdown("""
-    4. Importez ce fichier dans **GA4Checker** via l'interface.
+    4. Importez ce fichier dans **GA4Checker** via l'interface (Le fichier doit faire moins de 1Go).
     """)
     st.warning("⚠️ Attention : importer un fichier JSON classique au lieu du format JSONL provoquera une erreur.")
     st.markdown("""
