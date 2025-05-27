@@ -15,7 +15,7 @@ secondaryBackgroundColor = "#1F2A25"  # vert très sombre pour trancher un peu p
 textColor = "#D9CCA7"  # beige clair, très lisible
 
 [server]
-maxUploadSize = 1024
+maxUploadSize = 2048
 
 # Les couleurs du logo :
 #    Noir : #070D0C
