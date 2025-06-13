@@ -27,6 +27,7 @@ st.markdown("""
 # Contributions
 st.subheader("🧠 Contributions & Soutiens")
 st.markdown("""
+- **Sébastien Monnier**
 - **Lucas Rollin**
 - **Daniel Valide**
 - **Christian Laville**
