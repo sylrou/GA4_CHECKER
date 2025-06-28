@@ -57,7 +57,7 @@ if st.button("▶️ Exécuter la requête"):
 
 con.close()
 
-
+# --- Fin de la page ---
 st.markdown("---")
 st.subheader("💡 Proposer votre requête pour l'ajouter en feature dans l'app !")
 st.markdown(

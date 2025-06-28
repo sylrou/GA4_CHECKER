@@ -8,7 +8,7 @@ import uuid
 from assets.ui import ui_btn_link, ui_audit_netlinkink
 from services.functions import safe_query_wrapper
 
-# --- 🔒 Bannière d'état en haut de page ---
+# --- Bannière d'état en haut de page ---
 def show_database_status():
     if st.session_state.get("ga4_ready"):
         st.success("✅ Données GA4 chargées et prêtes à être analysées.")
@@ -17,7 +17,7 @@ def show_database_status():
 
 show_database_status()
 
-# --- 🔄 Réinitialisation possible si base déjà chargée ---
+# --- Réinitialisation possible si base déjà chargée ---
 if st.session_state.get("ga4_ready") and "db_path" in st.session_state:
     st.markdown("#### Vous avez déjà importé une base")
     if st.button("🧨 Réinitialiser et importer une nouvelle donnée"):

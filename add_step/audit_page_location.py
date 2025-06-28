@@ -95,6 +95,7 @@ with st.expander("📊 Affichez la liste des paramètres de l'url"):
         file_name="ga4_query_params.csv"
     )
 ui_sep()
+
 # --- Résumé technique par URL (compute) ---
 st.subheader("Résumé technique par URL")
 with st.spinner("📊 Génération du résumé technique par URL..."):

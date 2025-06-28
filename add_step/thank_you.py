@@ -1,13 +1,13 @@
 import streamlit as st
 from assets.ui import ui_caption
 
-# 🎉 Petit effet sympa à chaque chargement
+# --- Petit effet sympa à chaque chargement ---
 st.balloons()
 
-# Titre principal
+# --- Titre principal ---
 st.title("🤝 Remerciements")
 
-# Introduction
+# --- Introduction ---
 st.markdown("""
 Bienvenue sur la page des remerciements du projet **GA4Checker**.  
 Ce projet est open-source, mais surtout une belle aventure humaine 🙌  
@@ -16,7 +16,7 @@ Merci à toutes celles et ceux qui, de près ou de loin, ont contribué à sa cr
 
 st.markdown("---")
 
-# Special thanks
+# --- Special thanks ---
 st.subheader("🤍 Very special thanks")
 st.markdown("""
 - **Yannick Darcy** — Pour son soutien indéfectible et sans qui aucune ligne de code ne serait jamais en production.
@@ -24,7 +24,7 @@ st.markdown("""
 - **Corentin Deschamps** — Pour avoir partagé cette aventure de formation avec moi.
 """)
 
-# Contributions
+# --- Contributions ---
 st.subheader("🧠 Contributions & Soutiens")
 st.markdown("""
 - **Sébastien Monnier**
@@ -39,7 +39,7 @@ st.markdown("""
 - **Toutes les personnes qui partagent leurs idées, retours, et leur temps.**
 """)
 
-# Appel à contribution
+# --- Appel à contribution ---
 st.markdown("""
 **Et vous ?**  
 Si vous avez des idées, des remarques, ou l’envie de contribuer, n'hésitez pas à me contacter !

@@ -66,7 +66,7 @@ with st.expander("ℹ️ Vous pouvez **consulter la documentation complète** en
 
 ui_sep()
 
-# --- Bloc pour la dernière mise à jour ---
+# --- Bloc de de la dernière mises à jour ---
 st.markdown("""
 ## Dernière mise à jour
 """)
@@ -111,7 +111,7 @@ ui_btn_link("add_step/audit_event_params.py", "Analyse - event_params")
 
 ui_sep()
 
-# --- Mises à jour précédentes ---
+# --- Bloc des dernières mises à jour précédentes ---
 st.markdown("""## Mises à jour précédentes""")
 
 with st.expander("📂 Mise à jour du 11/05/2025 - Amélioration de l'exploration SQL libre"):

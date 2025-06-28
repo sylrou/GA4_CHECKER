@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import date
 
+# --- Contenu de la page ---
 st.title("💡 Proposez une amélioration !")
 st.markdown("---")
 

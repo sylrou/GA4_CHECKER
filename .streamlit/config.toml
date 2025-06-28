@@ -1,17 +1,10 @@
 # .streamlit/config.toml
 
-#[theme]
-#base = "dark"
-#primaryColor = "#FCC02D"
-#backgroundColor = "#0e1117"
-#secondaryBackgroundColor = "#1c1f26"
-#textColor = "#FFFFFF"
-
 [theme]
 base = "dark"
-primaryColor = "#4C7364"  # vert doux = couleur d'accent
+primaryColor = "#4C7364"  # vert doux
 backgroundColor = "#070D0C"  # noir profond
-secondaryBackgroundColor = "#1F2A25"  # vert très sombre pour trancher un peu plus
+secondaryBackgroundColor = "#1F2A25"  # vert très sombre
 textColor = "#D9CCA7"  # beige clair, très lisible
 
 [server]
