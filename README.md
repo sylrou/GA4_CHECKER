@@ -50,8 +50,8 @@ Contrôles à implémenter :
 - ✅ Lister les événements dans la donnée
 - ✅ Lister les dates dans la donnée
 - ✅ Comparer les événements de la donnée avec la liste d'événements standard recommandés par Google
-- 🔵 Comparer les dimensions par événements standards avec la liste des dimensions recommandées par Google
-- 🔵 Vérifier la couverture de la collecte en fonction des dates
+- ✅ Comparer les dimensions par événements standards avec la liste des dimensions recommandées par Google
+- ✅ Vérifier la couverture de la collecte en fonction des dates
 - 🔵 Vérifier la présence de `ga_session_id` (identifiant de session valide)
 - 🔵 Vérifier la couverture de la collecte des sessions sur la période de l'échantillon
 - 🔵 Vérifier la présence de `user_pseudo_id` (identifiant utilisateur anonyme)
@@ -61,7 +61,7 @@ Contrôles à implémenter :
 - 🔵 Vérifier la couverture des dimensions par événements (`event_name`, `event_params`)
 - 🔵 Vérifier la présence des événements et des dimensions recommandées (`event_name`, `event_params`)
 - 🔵 Vérifier la présence des `source/medium/campaign` dans l'URL de la landing page et dans les colonnes spécifiques (`gclid`, etc.)
-- 🔵 Vérifier la présence des `page_location` dans la donnée
+- ✅ Vérifier la présence des `page_location` dans la donnée
 - 🔵 Vérifier la présence des événements `session_start` et `first_session` dans la donnée pour chaque session
 
 ---
@@ -75,11 +75,11 @@ Contrôles à implémenter :
 - 🔵 Vérifier que les dimensions clés ne contiennent pas de valeurs nulles ou erronées (`0`, `-1`, `undefined`, `null`)
 - 🔵 Vérifier la validité des valeurs numériques (`event_value`, `event_revenue`, `event_currency`)
 - 🔵 Vérifier la cohérence des paramètres d'URL de `source/medium/campagne` vs `source/medium` (gclid) → taux de matching
-- 🛠️ Vérifier dans le `page_location` qu'il n'y a pas de paramètres d'URL de type PII (email, nom, prénom...)
-- 🛠️ Vérifier la présence de fragment dans 'page_location' (tableau ou fragment ?)
-- 🛠️ Vérifier les domains présents dans la donnée (histograme ou tableau ?)
-- 🛠️ Vérifier que les urls ne sont pas trop longues (tableau avec les url > x char ?)
-- 🛠️ Vérifier que les urls sont en https => Histograme ?
+- ✅️ Vérifier dans le `page_location` qu'il n'y a pas de paramètres d'URL de type PII (email, nom, prénom...)
+- ✅ Vérifier la présence de fragment dans 'page_location' (tableau ou fragment ?)
+- ✅ Vérifier les domains présents dans la donnée (histograme ou tableau ?)
+- ✅ Vérifier que les urls ne sont pas trop longues (tableau avec les url > x char ?)
+- ✅ Vérifier que les urls sont en https => Histograme ?
 - 🛠️ Vérifier qu'il n'y a pas de doublons d'url
 ---
 
@@ -127,7 +127,7 @@ Contrôles à implémenter :
 - ✅ Extraction de `event_params`, `event_name`, `page_location`
 - ✅ Interface interactive via Streamlit pour `steamlist` (events) et `validity` (params URL)
 - ✅ Séparation des fichiers par module (préparation d’un menu global Streamlit)
-- 🛠️ Faire une page spécifique pour l'import de la donnée
+- ✅ Faire une page spécifique pour l'import de la donnée
 - 🔵 Proposer un jeu de donnée de test pour l'utilisateur qui n'a pas de donnée sous la main et favoriser l'onboarding
 
 ## 📦 Environnement technique
@@ -143,10 +143,10 @@ Contrôles à implémenter :
 - ✅ Définir comment unnest la donnée du format JSON
 - 🔵 Définir comment unnest la donnée du format Parquet
 - 🔵 Développer les requêtes SQL nécessaires pour chaque contrôle dans BigQuery
-- 🔵 Automatiser les tests via un script Python utilisant DuckDB pour le traitement des exports JSON
+- ✅ Automatiser les tests via un script Python utilisant DuckDB pour le traitement des exports JSON
 - 🔵 Automatiser les tests via un script Python utilisant DuckDB pour le traitement des exports Parquet
 - 🔵 Générer un rapport détaillé sur la qualité des données GA4
-- 🛠️ Ajouter en production une page de remerciement
+- ✅ Ajouter en production une page de remerciement
 
 ---
 
@@ -163,4 +163,4 @@ Contrôles à implémenter :
 
 👨‍💻 Auteur : **Sylvain Rouxel**
 🗓️ Création : **2024-12-01**
-🛠️ Dernière mise à jour : **2025-04-26**
+🛠️ Dernière mise à jour : **2025-07-01**
