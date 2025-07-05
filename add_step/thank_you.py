@@ -21,6 +21,7 @@ st.subheader("🤍 Very special thanks")
 st.markdown("""
 - **Yannick Darcy** — Pour son soutien indéfectible et sans qui aucune ligne de code ne serait jamais en production.
 - **Jonathan Mary** — Pour m'avoir (généreusement 😅) forcé à suivre *Introduction to Computer Science with Python* du MIT.
+- **Laurent Roy** — Pour son enseignement et ses cours de programmation
 - **Corentin Deschamps** — Pour avoir partagé cette aventure de formation avec moi.
 """)
 
