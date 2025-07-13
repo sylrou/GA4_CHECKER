@@ -34,11 +34,11 @@ Légende pour les phases :
 
 ### 🔧 Phase 0 – Préparation du dataset
 - 🛠️ Préparer un data catalogue GA4 à partir des specs officielles Google
-- 🔵 Identifier le type de dataset via les événements (lead_gen, ecommerce, game...)
-- 🔵 Conditionner les recommandations en fonction du type de dataset
+- ✅ Identifier le type de dataset via les événements (lead_gen, ecommerce, game...)
+- 🛠️ Conditionner les recommandations en fonction du type de dataset
 - 🔵 Gérer l'importation et l'affichage des informations basiques de l'extraction dans streamlit
-- 🔵 Gérer la mise en place de la partie validity dans streamlit avec la librairie urllib.parse
-- 🔵 Définir un output pour l'utilisateur et avoir les informations dans un tableau avec une première analyse
+- ✅ Gérer la mise en place de la partie validity du page_locationn dans streamlit avec la librairie urllib.parse
+- ✅ Définir un output pour l'utilisateur et avoir les informations dans un tableau avec une première analyse
 
 ---
 
@@ -58,7 +58,7 @@ Contrôles à implémenter :
 - 🔵 Vérifier la continuité de la collecte des utilisateurs (`user_pseudo_id`) sur la période de l'échantillon
 - 🔵 Vérifier la présence de `user_id` (si implémenté pour les utilisateurs connectés)
 - 🔵 Vérifier la couverture de la collecte des utilisateurs (`user_id`) sur la période de l'échantillon
-- 🔵 Vérifier la couverture des dimensions par événements (`event_name`, `event_params`)
+- ✅ Vérifier la couverture des dimensions par événements (`event_name`, `event_params`)
 - 🔵 Vérifier la présence des événements et des dimensions recommandées (`event_name`, `event_params`)
 - 🔵 Vérifier la présence des `source/medium/campaign` dans l'URL de la landing page et dans les colonnes spécifiques (`gclid`, etc.)
 - ✅ Vérifier la présence des `page_location` dans la donnée
@@ -80,7 +80,7 @@ Contrôles à implémenter :
 - ✅ Vérifier les domains présents dans la donnée (histograme ou tableau ?)
 - ✅ Vérifier que les urls ne sont pas trop longues (tableau avec les url > x char ?)
 - ✅ Vérifier que les urls sont en https => Histograme ?
-- 🛠️ Vérifier qu'il n'y a pas de doublons d'url
+- ✅ Vérifier qu'il n'y a pas de doublons des paramètres dans les urls
 ---
 
 ### 🧬 3. Unicité (Uniqueness)
@@ -128,7 +128,7 @@ Contrôles à implémenter :
 - ✅ Interface interactive via Streamlit pour `steamlist` (events) et `validity` (params URL)
 - ✅ Séparation des fichiers par module (préparation d’un menu global Streamlit)
 - ✅ Faire une page spécifique pour l'import de la donnée
-- 🔵 Proposer un jeu de donnée de test pour l'utilisateur qui n'a pas de donnée sous la main et favoriser l'onboarding
+- ✅ Proposer un jeu de donnée de test pour l'utilisateur qui n'a pas de donnée sous la main et favoriser l'onboarding
 
 ## 📦 Environnement technique
 - Python 3.11+
@@ -163,4 +163,4 @@ Contrôles à implémenter :
 
 👨‍💻 Auteur : **Sylvain Rouxel**
 🗓️ Création : **2024-12-01**
-🛠️ Dernière mise à jour : **2025-07-01**
+🛠️ Dernière mise à jour : **2025-07-13**
